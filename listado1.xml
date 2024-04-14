@@ -2,9 +2,9 @@
 <camaras>
     <camara>
         <id>1</id>
-        <src>https://informo.madrid.es/cameras/Camara06303.jpg</src>
-        <lugar>PLAZA DE CASTILLA (NORTE)</lugar>
-        <coordenadas>-3.68894207537291,40.466063829633</coordenadas>
+        <src>https://ctraficomovilidad.malaga.eu/recursos/movilidad/camaras_trafico/TV-24.jpg</src>
+        <lugar>TV24-PTE. MEDITERRÁNEO</lugar>
+        <coordenadas>-4.424923000000033,36.73751199999788</coordenadas>
     </camara>
     <camara>
         <id>2</id>
@@ -14,9 +14,9 @@
     </camara>
     <camara>
         <id>3</id>
-        <src>https://informo.madrid.es/cameras/Camara09301.jpg</src>
-        <lugar>PLAZA DE ESPAÑA - GRAN VIA</lugar>
-        <coordenadas>-3.71080716985496,40.4232117722576</coordenadas>
+        <src>https://ctraficomovilidad.malaga.eu/recursos/movilidad/camaras_trafico/TV-25.jpg</src>
+        <lugar>TV25-RAMÓN Y CAJAL</lugar>
+        <coordenadas>-4.422465012257606,36.74670660342603</coordenadas>
     </camara>
     <camara>
         <id>4</id>
