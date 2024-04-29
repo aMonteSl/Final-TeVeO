@@ -3,10 +3,13 @@
 <!-- index.html -->
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
-
-
 {% block body %}
     <h1>¡Bienvenido a TeVeO!</h1>
+    {% for comment in comments %}
+        <div class="comment">
+            <h2><a href="{% url 'camera' comment.camera.id %}">{{ comment.camera.id }}</a></h2>
+            <p>{{ comment.date }}</p>
+            <p>{{ comment.text }}</p>
+        </div>
+    {% endfor %}
 {% endblock %}
-
-

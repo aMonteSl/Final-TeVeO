@@ -8,7 +8,7 @@ body {
     -moz-background-size: contain;
     -o-background-size: contain;
     background-size: contain;
-    height: 200px; /* Ajusta la altura de acuerdo a tus necesidades */
+    height: 100px; /* Ajusta la altura de acuerdo a tus necesidades */
     width: 100%;
 
 }
@@ -67,8 +67,10 @@ link.visited {
     color: #66ff00
 }
 
+/* Este es el requisito del tamaño de la imagen de la camara, se le añadio un margen superior de 50px para que no se vea tan pegada al titulo de la pagina. */
 .img_size_camera {
     margin-top: 50px;
+    margin-bottom: 0%;
     width: 50%;
     height: auto;
 }

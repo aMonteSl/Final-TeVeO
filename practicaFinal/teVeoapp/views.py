@@ -13,7 +13,15 @@ SELECTED_XML = "selected_xml"
 def index(request):
     # Devolver la plantilla index.html
     template = loader.get_template('index.html')
-    return HttpResponse(template.render())
+    # Asi puedo pasar los comentarios ordenados por fecha
+    comments = Comment.objects.order_by('-date')
+    context = {
+        'comments': comments,
+        'cameras_count': Camera.objects.count(),
+        'comments_count': Comment.objects.count(),
+    }
+    return HttpResponse(template.render(context))
+    
 
 
 
@@ -33,7 +41,7 @@ def mainCameras(request):
     # a menos comentarios).
 
     # Primero debo de obtener las fuentes de datos disponibles en static/xml
-    list_cameras, random_img = None, None
+    random_img = None
     cameras = Camera.objects.all()
     if request.method == 'POST':
         xml_selected = request.POST.get(f'{SELECTED_XML}')
@@ -42,17 +50,17 @@ def mainCameras(request):
         else:
             load_cameras_from_xml(xml_selected)
             get_img_of_cameras()
-            random_img = get_random_img()
-            print("Random img: ", random_img)
-            cameras = Camera.objects.all()
 
+    random_img = get_random_img()
     xml_files = get_xml_files()
     template = loader.get_template('mainCameras.html')
     context = {
         'request': request,
         'xml_files': xml_files,
         'random_img': random_img,
-        'cameras': cameras
+        'cameras': cameras,
+        'cameras_count': cameras.count(),
+        'comments_count': Comment.objects.count(),
     }
     return HttpResponse(template.render(context))
 
@@ -69,7 +77,10 @@ def camera(request, id):
     template = loader.get_template('camera.html')
     context = {
         'request': request,
-        'camera': camera
+        'camera': camera,
+        'cameras_count': Camera.objects.count(),  
+        'comments_count': Comment.objects.count(),
+
     }
     return HttpResponse(template.render(context))
 
@@ -95,7 +106,9 @@ def comment_view(request):
         'request': request,
         'comments': comments,
         'camera': camera,
-        'now': timezone.now()
+        'now': timezone.now(),
+        'cameras_count': Camera.objects.count(),
+        'comments_count': Comment.objects.count(),
     }
     return render(request, 'comment.html', context)
 
@@ -111,7 +124,9 @@ def camera_dyn(request, id):
         return HttpResponse("Cámara no encontrada")
     context = {
         'request': request,
-        'camera': camera
+        'camera': camera,
+        'cameras_count': Camera.objects.count(),
+        'comments_count': Comment.objects.count(),
     }
     return HttpResponse(template.render(context))
 
@@ -122,7 +137,9 @@ def latest_image(request, id):
     img_path = get_actual_img(id)
     context = {
         'request': request,
-        'camera': camera
+        'camera': camera,
+        'cameras_count': Camera.objects.count(),
+        'comments_count': Comment.objects.count(),
     }
     return render(request, 'image.html', context)
     
@@ -138,6 +155,8 @@ def get_comments(request, id):
         'request': request,
         'comments': comments,
         'camera': camera,
-        'now': timezone.now()
+        'now': timezone.now(),
+        'cameras_count': Camera.objects.count(),
+        'comments_count': Comment.objects.count(),
     }
     return render(request, 'comment.html', context)
