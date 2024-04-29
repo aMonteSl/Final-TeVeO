@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- index.html -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+
+{% block body %}
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+<div class="row">
+    <div class="col-6 text-center">
+        <div style="background-color: black; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            <h1 style="color: white; margin-top: 20px;">{{ camera.name }}</h1>
+            <h1 style="color: white;">Coordenadas: {{ camera.coordinates }}</h1>
+            <p style="color: white;">Hora actual: {{ now }}</p>
+        </div>
+        <img src="{% url 'latest_image' camera.id %}?{{now}}" class="img_size_camera" alt="{{ camera.name }}" hx-get="{% url 'latest_image' camera.id %}?{{now}}" hx-trigger="every 5s" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+    </div>
+    <div class="col-6">
+        <div id="comment-section" style="background-color: black; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;" hx-get="{% url 'get_comments' camera.id %}">
+            <h1 style="color: white; margin-top: 20px; text-align: center;">Sección de Comentarios</h1>
+            <div id="comment-list">
+                {% for comment in comments %}
+                    <div style="background-color: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 20px;">
+                        <h5>{{ comment.comment }}</h5>
+                        <p><small>Fecha: {{ comment.date }}</small></p>
+                    </div>
+                {% empty %}
+                    <div style="background-color: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 20px;">
+                        <h5>No hay comentarios para esta cámara por el momento.</h5>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <form id="comment-form" hx-post="{% url 'comment' %}" hx-target="#comment-list" style="margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="commentBody">Introduce un comentario para esta cámara:</label>
+                <input type="text" id="commentBody" name="body" class="form-control" placeholder="Escribe tu comentario aquí...">
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color: black; color: white;">Enviar comentario</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

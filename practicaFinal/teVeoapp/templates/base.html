@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Título de tu página</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <link rel="icon" type="image/ico" href="{% static 'img/icon/favicon.ico' %}">
+</head>
+<body>
+    <header >
+        <div class="header-container">
+            <img src="{% static 'img/resources/header.jpg' %}" class="img-fluid header" alt="...">
+            <a href="{% url 'index' %}" class="header-title">TeVeo</a>
+        </div>
+    </header>
+
+    <main>
+        {% block body %}
+        {% endblock %}
+    </main>
+</body>
+</html>

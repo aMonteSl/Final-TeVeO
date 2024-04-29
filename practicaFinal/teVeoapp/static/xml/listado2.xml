@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<list>
+    <cam id="A">
+        <url>http://infocar.dgt.es/etraffic/data/camaras/3.jpg</url>
+        <info>CAMARA-CGT VALLADOLID_3</info>
+        <place>
+            <latitude>41.9811</latitude>
+            <longitude>-4.4348</longitude>
+        </place>
+    </cam>
+    <cam id="B">
+        <url>http://infocar.dgt.es/etraffic/data/camaras/4.jpg</url>
+        <info>CAMARA-CGT VALLADOLID_4</info>
+        <place>
+            <latitude>41.9227</latitude>
+            <longitude>-4.5063</longitude>
+        </place>
+    </cam>
+    <cam id="C">
+        <url>http://infocar.dgt.es/etraffic/data/camaras/790.jpg</url>
+        <info>CAMARA-CGT MADRID_790</info>
+        <place>
+            <latitude>40.393585</latitude>
+            <longitude>-3.772143</longitude>
+        </place>
+    </cam>
+</list>

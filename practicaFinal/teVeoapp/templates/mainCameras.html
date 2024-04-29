@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- index.html -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+
+{% block body %}
+{% if xml_files %}
+<div class="container text-center">
+    <div class="row">
+        <div class="col-6 bg-custom-col-color text-gray-custom"> <!-- Aplicando la clase personalizada -->
+            <h2 class="mb-4 p-3 bg-dark text-white rounded mt-4">Fuentes de datos disponibles</h2>
+            <form method="post">
+                {% for xml_file in xml_files %}
+                    <div class="mb-2">
+                        <span style="font-size: larger;" class="mt-4 text-gray-custom">{{ forloop.counter }}. Fuente de datos: {{ xml_file }}</span><br>
+                        <button type="submit" class="btn btn-dark" name="selected_xml" value="{{ xml_file }}">Cargar fuente de datos</button>
+                    </div>
+                    <hr>
+                {% endfor %}
+                <button type="submit" class="btn btn-dark" name="selected_xml" value="clean">Limpiar datos</button>
+            </form>
+        </div>
+        <div class="col-6 bg-custom-col-color text-gray-custom"> <!-- Aplicando la clase personalizada -->
+            <h2 class="mb-4 p-3 bg-dark text-white rounded mt-4">Lista de cámaras</h2>
+            <div class="container text-center">
+                <figure>
+                    {%if random_img %}
+                        <img src="{% static 'img/data/'|add:random_img %}" class="img-thumbnail" alt="" style="width: 300px; height: 200px;">
+                        <figcaption>Imagen aleatoria</figcaption>
+                    {% else %}
+                        <h2 class="mb-4 p-3 bg-danger rounded text-white">&#9888; No hay imagenes cargadas carga alguna fuente de datos  &#9888;</h2>
+                    {% endif %}
+                </figure>
+            <hr>
+            <div class="row">
+                {% if cameras %}
+                    <div id="cameraCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for camera in cameras %}
+                                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                    <div class="d-flex justify-content-center align-items-center">
+                                        <img src="{% static camera.img_path %}" class="d-block w-100 img-fluid" alt="{{ camera.name }}" style="max-height: 300px;">
+                                    </div>
+                                    <div class="carousel-caption d-none d-md-block text-center">
+                                        <h5 class="information">{{ camera.name }}</h5>
+                                        <p class="information">ID: {{ camera.id }}</p>
+                                        <div class="row">
+                                            <a href="/cameras/{{ camera.id }}" class="link">Página de la cámara</a>
+                                            <a href="/cameras" class="link">Página dinámica</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#cameraCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#cameraCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <hr> 
+                {% endif %}
+            
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% else %}
+    <h1>¡No hay cámaras disponibles!</h1>
+{% endif %}
+{% endblock %}

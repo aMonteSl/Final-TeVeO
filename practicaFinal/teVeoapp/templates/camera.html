@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+<!-- index.html -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+{% block body %}
+<div class="row" style="background-color: black;">
+    <div class="col-md-12 text-center">
+        <h1 style="color: white; margin-top: 20px;">{{ camera.name }}, Coordenadas:{{ camera.coordinates }}</h1> <!-- Add more attributes as needed -->
+        <a href="/cameras/{{ camera.id }}/dyn" class="link">Página dinámica de la cámara</a>
+        <a href="{% url 'comment' %}?camera_id={{ camera.id }}" style="margin-bottom: 20px;">Poner comentario a la cámara</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <img src="{% static camera.img_path %}" class="img_size_camera" alt="{{ camera.name }}">  
+    </div>
+</div>
+
+{% endblock %}

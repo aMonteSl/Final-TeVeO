@@ -1,0 +1,74 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #0000007e;
+}
+
+.header {
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
+    height: 200px; /* Ajusta la altura de acuerdo a tus necesidades */
+    width: 100%;
+
+}
+
+.header-container {
+    position: relative;
+    text-align: center;
+}
+.header-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 3em;
+    text-decoration: none;
+}
+
+.img-thumbnail-small {
+    width: 100px; /* Puedes ajustar este valor según el tamaño deseado */
+    height: auto; /* Esto mantiene la proporción de la imagen */
+}
+
+.fixed-size-image {
+    width: 300px;
+    height: 200px;
+}
+
+.bg-custom-col-color {
+    background-color: #292929;
+}
+
+.text-gray-custom {
+    color: rgb(122, 115, 115);
+}
+
+.custom-text-size {
+    font-size: 15px;
+}
+
+.link {
+    color: #66ff00;
+    text-decoration: underline;
+}
+
+.link:hover {
+    color: rgb(154, 214, 97);
+    text-decoration: underline;
+}
+
+link.visited {
+    color: white;
+}
+
+.information {
+    color: #66ff00
+}
+
+.img_size_camera {
+    margin-top: 50px;
+    width: 50%;
+    height: auto;
+}
