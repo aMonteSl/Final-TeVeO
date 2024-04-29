@@ -49,6 +49,7 @@ def mainCameras(request):
     xml_files = get_xml_files()
     template = loader.get_template('mainCameras.html')
     context = {
+        'request': request,
         'xml_files': xml_files,
         'random_img': random_img,
         'cameras': cameras
@@ -67,6 +68,7 @@ def camera(request, id):
         return HttpResponse("Cámara no encontrada")
     template = loader.get_template('camera.html')
     context = {
+        'request': request,
         'camera': camera
     }
     return HttpResponse(template.render(context))
@@ -90,6 +92,7 @@ def comment_view(request):
     for comment in comments:
         print(comment.comment)
     context = {
+        'request': request,
         'comments': comments,
         'camera': camera,
         'now': timezone.now()
@@ -107,6 +110,7 @@ def camera_dyn(request, id):
     if camera is None:
         return HttpResponse("Cámara no encontrada")
     context = {
+        'request': request,
         'camera': camera
     }
     return HttpResponse(template.render(context))
@@ -117,6 +121,7 @@ def latest_image(request, id):
         return HttpResponse("Cámara no encontrada")
     img_path = get_actual_img(id)
     context = {
+        'request': request,
         'camera': camera
     }
     return render(request, 'image.html', context)
@@ -130,6 +135,7 @@ def get_comments(request, id):
     for comment in comments:
         print(comment.comment)
     context = {
+        'request': request,
         'comments': comments,
         'camera': camera,
         'now': timezone.now()
