@@ -10,15 +10,16 @@
 <script src="https://unpkg.com/htmx.org@1.9.12"></script>
 <div class="row">
     <div class="col-6 text-center">
-        <div style="background-color: black; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+        <div style="background-color: #212529; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
             <h1 style="color: white; margin-top: 20px;">{{ camera.name }}</h1>
-            <h1 style="color: white;">Coordenadas: {{ camera.coordinates }}</h1>
+            <p style="color: white;">Coordenadas: {{ camera.coordinates }}</p>
+            <p style="color: white;">ID: {{ camera.id }}</p>
             <p style="color: white;">Hora actual: {{ now }}</p>
         </div>
-        <img src="{% url 'latest_image' camera.id %}?{{now}}" class="img_size_camera" alt="{{ camera.name }}" hx-get="{% url 'latest_image' camera.id %}?{{now}}" hx-trigger="every 5s" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
+        <img src="{{ latest_image_url }}" class="img_size_camera" alt="{{ camera.name }}" hx-get="{% url 'latest_image' camera.id %}?{{now}}" hx-trigger="every 1s" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}'>
     </div>
     <div class="col-6">
-        <div id="comment-section" style="background-color: black; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;" hx-get="{% url 'get_comments' camera.id %}">
+        <div id="comment-section" style="background-color: #212529; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;" hx-get="{% url 'get_comments' camera.id %}">
             <h1 style="color: white; margin-top: 20px; text-align: center;">Sección de Comentarios</h1>
             <div id="comment-list">
                 {% for comment in comments %}

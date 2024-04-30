@@ -122,4 +122,22 @@ def clear_all():
     directory = os.path.join(base_dir, 'teVeoapp/static/img/data')
     for f in os.listdir(directory):
         os.remove(os.path.join(directory, f))
+    # Ahora hay que eliminar tambien las imagenes de comments
+    directory = os.path.join(base_dir, 'teVeoapp/static/img/comments')
+    for f in os.listdir(directory):
+        os.remove(os.path.join(directory, f))
     print("All images deleted")
+
+def save_img_comment(path):
+    # Copiar la imagen del path a la carpeta static/img/comments
+    # La copia tendrá como nombre el nombre de la imagen original con un sufijo que sea el numero de comentario de dicha imagen
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    directory = os.path.join(base_dir, 'teVeoapp/static/img/comments')
+    result = [f for f in os.listdir(directory) if f.endswith('.jpg')]
+    # Ahora tengo que seleccionar la imagen que corresponde al path, y guardarla en comments con el sufijo
+    new_path = os.path.join('img/comments', f'{len(result)}_{os.path.basename(path)}')
+    full_path = os.path.join(base_dir, 'teVeoapp/static', new_path)
+    with open(full_path, 'wb') as f:
+        with open(os.path.join(base_dir, 'teVeoapp/static', path), 'rb') as f2:
+            f.write(f2.read())
+    return new_path

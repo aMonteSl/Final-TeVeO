@@ -4,7 +4,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
 from .models import Camera, Comment
 from django.utils import timezone
-from .manageXML import get_xml_files, load_cameras_from_xml, get_img_of_cameras, get_random_img, clear_all, get_actual_img
+from .manageXML import get_xml_files, load_cameras_from_xml, get_img_of_cameras, get_random_img, clear_all, get_actual_img, save_img_comment
+from django.db.models import Count
 # Create your views here.
 
 SELECTED_XML = "selected_xml"
@@ -14,7 +15,14 @@ def index(request):
     # Devolver la plantilla index.html
     template = loader.get_template('index.html')
     # Asi puedo pasar los comentarios ordenados por fecha
-    comments = Comment.objects.order_by('-date')
+    order = request.POST.get('order', 'desc')
+    if request.method == 'POST':
+        if order == 'asc':
+            comments = Comment.objects.order_by('date')
+        else:
+            comments = Comment.objects.order_by('-date')
+    else:
+        comments = Comment.objects.order_by('-date')
     context = {
         'comments': comments,
         'cameras_count': Camera.objects.count(),
@@ -22,8 +30,6 @@ def index(request):
     }
     return HttpResponse(template.render(context))
     
-
-
 
 @csrf_exempt
 def mainCameras(request):
@@ -42,12 +48,18 @@ def mainCameras(request):
 
     # Primero debo de obtener las fuentes de datos disponibles en static/xml
     random_img = None
-    cameras = Camera.objects.all()
+    # Ordenar las camaras por el número de comentarios de mas a menos comentarios
+    cameras = Camera.objects.annotate(num_comments=Count('comment')).order_by('-num_comments')
     if request.method == 'POST':
         xml_selected = request.POST.get(f'{SELECTED_XML}')
+        order = request.POST.get('order', 'desc')
+        if order == 'asc':
+            cameras = Camera.objects.annotate(num_comments=Count('comment')).order_by('num_comments')
+        else:
+            cameras = Camera.objects.annotate(num_comments=Count('comment')).order_by('-num_comments')
         if xml_selected == "clean":
             clear_all()
-        else:
+        elif xml_selected is not None:
             load_cameras_from_xml(xml_selected)
             get_img_of_cameras()
 
@@ -72,12 +84,23 @@ def camera(request, id):
     # mostrará un mensaje de error. En caso contrario, se mostrará la imagen
     # de la cámara, y un enlace para volver al listado de cámaras.
     camera = Camera.objects.filter(id=id).first()
+    # Obtener todos los comentarios de la camera
+    comments = Comment.objects.filter(camera=camera)
     if camera is None:
         return HttpResponse("Cámara no encontrada")
+    
+    if request.method == 'POST':
+        order = request.POST.get('order', 'desc')
+        if order == 'asc':
+            comments = Comment.objects.filter(camera=camera).order_by('date')
+        else:
+            comments = Comment.objects.filter(camera=camera).order_by('-date')
+
     template = loader.get_template('camera.html')
     context = {
         'request': request,
         'camera': camera,
+        'comments': comments,
         'cameras_count': Camera.objects.count(),  
         'comments_count': Comment.objects.count(),
 
@@ -95,8 +118,12 @@ def comment_view(request):
     if request.method == 'POST':
         comment_text = request.POST.get('body')  # Cambiar 'cuerpo' a 'body'
         if comment_text:  # Verificar si comment_text no es vacío
-            new_comment = Comment(comment=comment_text, camera=camera, date=timezone.now())
-            new_comment.save()
+            # Guardar el comentario en la base de datos con la camara, comentario, fecha y la imagen de la cámara en ese momento
+            img_comment = save_img_comment(camera.img_path)
+            print(f"Este es el path de la imagen del comentario: {img_comment}")
+            comment = Comment(camera=camera, comment=comment_text, date=timezone.now() ,img_path_comment=img_comment)
+            comment.save()
+
 
     comments = Comment.objects.filter(camera=camera)
     print("Estos son los comentarios: ")
@@ -120,13 +147,16 @@ def camera_dyn(request, id):
     # de la cámara, y un enlace para volver al listado de cámaras.
     template = loader.get_template('camera_dyn.html')
     camera = Camera.objects.filter(id=id).first()
+    latest_image = get_actual_img(id)
     if camera is None:
         return HttpResponse("Cámara no encontrada")
     context = {
         'request': request,
+        'latest_image': latest_image,
         'camera': camera,
         'cameras_count': Camera.objects.count(),
         'comments_count': Comment.objects.count(),
+        'now': timezone.now(),
     }
     return HttpResponse(template.render(context))
 

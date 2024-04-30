@@ -1,4 +1,6 @@
 from django.db import models
+# Importar pillow para poder trabajar con imágenes
+from PIL import Image
 
 # Create your models here.
 
@@ -24,10 +26,12 @@ class Camera(models.Model):
 class Comment(models.Model):
     # Comentario de la camara
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE)
-    # Comentario
-    comment = models.CharField(max_length=200)
+    # Comentario, con blanck=False, no se puede dejar vacio
+    comment = models.CharField(max_length=200, blank=False)
     # Fecha del comentario
     date = models.DateTimeField(auto_now_add=True)
-
+    # Imagen de la cámara en el momento del comentario
+    img_path_comment = models.CharField(max_length=200)
+    
     def __str__(self):
         return f'{self.camera} - {self.comment} - {self.date}'
