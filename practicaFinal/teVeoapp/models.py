@@ -28,7 +28,7 @@ class Comment(models.Model):
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE)
     # Comentario, con blanck=False, no se puede dejar vacio
     comment = models.CharField(max_length=200, blank=False)
-    # Fecha del comentario
+    # Fecha del comentario, auto_now_add=True para que se añada la fecha automáticamente
     date = models.DateTimeField(auto_now_add=True)
     # Imagen de la cámara en el momento del comentario
     img_path_comment = models.CharField(max_length=200)

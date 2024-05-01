@@ -9,30 +9,30 @@
 
 <div class="row">
     <div class="col-6 text-center">
-        <div style="background-color: #212529; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
-            <h1 style="color: white; margin-top: 20px;">{{ camera.name }}</h1>
-            <p style="color: white;">Coordenadas:{{ camera.coordinates }}<p>
-            <p style="color: white;">ID: {{ camera.id }}</p>
-            <p style="color: white;">Hora actual: {{ now }}</p>
+        <div class="custom-gray-bg text-white" style="border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            <h1 style="margin-top: 20px;">{{ camera.name }}</h1>
+            <p>Coordenadas:{{ camera.coordinates }}<p>
+            <p>ID: {{ camera.id }}</p>
+            <p>Hora actual: {{ now }}</p>
         </div>
         <img src="{% static camera.img_path %}" class="img_size_camera" alt="{{ camera.name }}">
     </div>
     <div class="col-6">
-        <div style="background-color: #212529; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
-            <h1 style="color: white; margin-top: 20px; text-align: center;">Sección de Comentarios</h1>
+        <div class="custom-gray-bg text-white" style="border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            <h1 style="margin-top: 20px; text-align: center;">Sección de Comentarios</h1>
         </div>
         <form action="" method="POST" class="form-group row" style="margin-top: 20px; margin-right: 20px; margin-left: 20px;">
             <div class="col-9">
-                <label for="commentBody">Introduce un comentario para esta pagina:</label>
+                <label for="commentBody">Introduce un comentario para esta página:</label>
                 <input type="text" id="commentBody" name="body" class="form-control" placeholder="Escribe tu comentario aquí...">
             </div>
             <div class="col-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary mt-3" style="background-color: black; color: white;">Enviar comentario</button>
+                <button type="submit" class="btn mt-3 custom-gray-bg text-white">Enviar comentario</button>
             </div>
         </form>
         {% if comments %}
             {% for comment in comments|dictsortreversed:"date" %}
-                <div style="background-color: #f8f9fa; border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+                <div class="text-white custom-gray-bg" style="border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
                     <h5>{{ forloop.counter }}. {{ comment.comment }}</h5>
                     <p><small>Fecha: {{ comment.date }}</small></p>
                 </div>

@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
+
 from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('config/', views.config, name='config'),
     path('comment/', views.comment_view, name='comment'),
     path('cameras/', views.mainCameras, name='mainCameras'),
     path('cameras/<str:id>/', views.camera, name='camera'),

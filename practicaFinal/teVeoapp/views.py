@@ -1,14 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
 from .models import Camera, Comment
 from django.utils import timezone
 from .manageXML import get_xml_files, load_cameras_from_xml, get_img_of_cameras, get_random_img, clear_all, get_actual_img, save_img_comment
+from .manageUser import get_user_config
 from django.db.models import Count
+import time
+from .forms import ConfigForm
+
 # Create your views here.
 
 SELECTED_XML = "selected_xml"
+
+
+def config(request):
+    if request.method == 'POST':
+        #print("Recibiendo datos del formulario")
+        form = ConfigForm(request.POST)
+        if form.is_valid():
+            request.session['username'] = form.cleaned_data['username']
+            request.session['font_size'] = form.cleaned_data['font_size']
+            request.session['font_family'] = form.cleaned_data['font_family']
+            #print("Redirigiendo a la página principal")
+            return HttpResponseRedirect('/')
+        else:
+            print(form.errors)
+    else:
+        form = ConfigForm()
+    #print("Mostrando la página de configuración")
+    #print(f"{request.method}")
+    return render(request, 'config.html', {'form': form})
+
 
 @csrf_exempt
 def index(request):
@@ -21,13 +45,21 @@ def index(request):
             comments = Comment.objects.order_by('date')
         else:
             comments = Comment.objects.order_by('-date')
+        
     else:
         comments = Comment.objects.order_by('-date')
+    
+    # Manejo de la sesion del usuario
+    username, font_size, font_family = get_user_config(request)
+    print(f"Username: {username}, Font size: {font_size}, Font family: {font_family}")
+    
+
     context = {
         'comments': comments,
         'cameras_count': Camera.objects.count(),
         'comments_count': Comment.objects.count(),
     }
+    
     return HttpResponse(template.render(context))
     
 
@@ -84,8 +116,9 @@ def camera(request, id):
     # mostrará un mensaje de error. En caso contrario, se mostrará la imagen
     # de la cámara, y un enlace para volver al listado de cámaras.
     camera = Camera.objects.filter(id=id).first()
-    # Obtener todos los comentarios de la camera
-    comments = Comment.objects.filter(camera=camera)
+    # Obtener todos los comentarios de la camera por defecto de más reciente a más antiguo
+    comments = Comment.objects.filter(camera=camera).order_by('-date')
+    
     if camera is None:
         return HttpResponse("Cámara no encontrada")
     
@@ -140,19 +173,29 @@ def comment_view(request):
     return render(request, 'comment.html', context)
 
 
-# @csrf_exempt Se lo quito para poder hacer peticiones GET
+@csrf_exempt
 def camera_dyn(request, id):
     # Seleccionar la cámara con el identificador indicado. Si no existe, se
     # mostrará un mensaje de error. En caso contrario, se mostrará la imagen
     # de la cámara, y un enlace para volver al listado de cámaras.
     template = loader.get_template('camera_dyn.html')
     camera = Camera.objects.filter(id=id).first()
-    latest_image = get_actual_img(id)
+    camera.img_path = get_actual_img(id)
     if camera is None:
         return HttpResponse("Cámara no encontrada")
+    if request.method == 'POST':
+        comment_text = request.POST.get('body')  # Cambiar 'cuerpo' a 'body'
+        if comment_text:  # Verificar si comment_text no es vacío
+            # Guardar el comentario en la base de datos con la camara, comentario, fecha y la imagen de la cámara en ese momento
+            img_comment = save_img_comment(camera.img_path)
+            print(f"Este es el path de la imagen del comentario: {img_comment}")
+            comment = Comment(camera=camera, comment=comment_text, date=timezone.now() ,img_path_comment=img_comment)
+            comment.save()
+    # Obtener todos los comentarios de la camera de más reciente a más antiguo
+    comments = Comment.objects.filter(camera=camera).order_by('-date')
     context = {
         'request': request,
-        'latest_image': latest_image,
+        'comments': comments,
         'camera': camera,
         'cameras_count': Camera.objects.count(),
         'comments_count': Comment.objects.count(),
@@ -170,6 +213,7 @@ def latest_image(request, id):
         'camera': camera,
         'cameras_count': Camera.objects.count(),
         'comments_count': Comment.objects.count(),
+        'latest_image_url': img_path + '?t=' + str(time.time()),
     }
     return render(request, 'image.html', context)
     
@@ -177,7 +221,8 @@ def get_comments(request, id):
     camera = Camera.objects.filter(id=id).first()
     if camera is None:
         return HttpResponse("Cámara no encontrada")
-    comments = Comment.objects.filter(camera=camera)
+    # Obtener todos los comentarios de la camera de más reciente a más antiguo
+    comments = Comment.objects.filter(camera=camera).order_by('-date')
     print("Estos son los comentarios: ")
     for comment in comments:
         print(comment.comment)
@@ -189,4 +234,4 @@ def get_comments(request, id):
         'cameras_count': Camera.objects.count(),
         'comments_count': Comment.objects.count(),
     }
-    return render(request, 'comment.html', context)
+    return render(request, 'get_comments.html', context)

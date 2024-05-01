@@ -4,13 +4,13 @@
 <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
 {% block body %}
-<div class="container mt-4">
+<div class="container bg-custom-col-color">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-6 mt-4">
             <form method="post" style="margin-bottom: 2rem;"> <!-- Añadiendo margin-bottom -->
                 {% csrf_token %}
                 <div class="form-group custom-form-group row">
-                    <label for="order" class="col-sm-4 col-form-label custom-label">Ordenar comentarios:</label>
+                    <label for="order" class="col-sm-4 col-form-label custom-label text-white">Ordenar comentarios:</label>
                     <div class="col-sm-6">
                         <select class="form-control" id="order" name="order">
                             <option value="desc">Más nuevos primero</option>
@@ -30,7 +30,7 @@
         <div class="col-md-8"> 
             <div class="card mb-4">
                 <div class="row g-0">
-                    <div class="col-md-7 d-flex align-items-center rounded bg-black">
+                    <div class="col-md-7 d-flex align-items-center rounded custom-gray-bg">
                         <div class="card-body text-center text-white">
                             <p class="card-text">Comentario: {{ comment.comment }}</p>
                             <p class="card-text">ID de la cámara: <a href="{% url 'camera' comment.camera.id %}" class="link">{{ comment.camera.id }}</a></p>

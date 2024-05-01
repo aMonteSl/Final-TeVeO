@@ -6,7 +6,7 @@
 <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 
 {% block body %}
-<div class="row" style="background-color: #212529;">
+<div class="row custom-gray-bg">
     <div class="col-md-12 text-center ">
         <h1 style="color: white; margin-top: 20px;">{{ camera.name }}, Coordenadas:{{ camera.coordinates }}</h1> 
         <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica de la cámara</a>
@@ -15,7 +15,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6 text-center align-items-center">
+    <div class="col-md-6 text-center align-items-center ">
         <h2 class="mb-4 p-2 bg-dark text-white rounded mt-4">Imagen actual</h2>
         <img src="{% static camera.img_path %}" class="img_size_camera" alt="{{ camera.name }}">  
     </div>
@@ -27,7 +27,7 @@
                     <form method="post" class="mb-3">
                         {% csrf_token %}
                         <div class="form-group row"> <!-- Added row class here -->
-                            <label for="order" class="col-sm-6 col-form-label">Ordenar comentarios por:</label> <!-- Added col-sm-6 class here -->
+                            <label for="order" class="col-sm-6 col-form-label text-white">Ordenar comentarios por:</label> <!-- Added col-sm-6 class here -->
                             <div class="col-sm-4"> <!-- Added this div with col-sm-4 class -->
                                 <select class="form-control" id="order" name="order">
                                     <option value="desc">Más reciente</option>
@@ -35,7 +35,7 @@
                                 </select>
                             </div>
                             <div class="col-sm-2"> <!-- Added this div with col-sm-2 class -->
-                                <button type="submit" class="btn btn-dark">Ordenar</button>
+                                <button type="submit" class="btn custom-gray-bg text-white">Ordenar</button>
                             </div>
                         </div>
                     </form>
@@ -45,11 +45,11 @@
             </div>
         </div>
         {% for comment in comments %}
-        <div class="col-md-8 offset-md-2"> 
+        <div class="col-md-8 offset-md-2 {% if forloop.last %}mb-5{% endif %}">
             <div class="card mb-3">
                 <div class="row g-0">
-                    <div class="col-md-7 d-flex align-items-center">
-                        <div class="card-body text-center">
+                    <div class="col-md-8 d-flex align-items-center rounded custom-gray-bg">
+                        <div class="card-body text-center text-white">
                             <p class="card-text">Comentario: {{ comment.comment }}</p>
                             <p class="card-text">ID de la cámara: {{ comment.camera.id }}</p>
                             <p class="card-text">Fecha: {{ comment.date }}</p>
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
     
 </div>

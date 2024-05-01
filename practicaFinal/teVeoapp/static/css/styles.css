@@ -37,13 +37,19 @@ body {
     height: 200px;
 }
 
-.bg-custom-col-color {
-    background-color: #292929;
+.custom-gray-bg {
+    background-color: #212529;
+}
+
+.tn-primary  {
+    background-color: #585353;
 }
 
 .text-gray-custom {
     color: rgb(122, 115, 115);
 }
+
+
 
 .custom-text-size {
     font-size: 15px;
@@ -89,4 +95,41 @@ link.visited {
 
 .custom-label {
     font-weight: bold;
+}
+
+/* Estilos personalizados para las letras */
+.font-size-estandar {
+    font-size: 16px;
+}
+
+.font-size-grande {
+    font-size: 20px;
+}
+
+.font-size-pequena {
+    font-size: 14px;
+}
+
+.font-family-roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.font-family-arial {
+    font-family: 'Arial', sans-serif;
+}
+
+.font-family-times {
+    font-family: 'Times New Roman', serif;
+}
+
+.font-family-verdana {
+    font-family: 'Verdana', sans-serif;
+}
+
+.font-family-helvetica {
+    font-family: 'Helvetica', sans-serif;
+}
+
+.font-family-courier {
+    font-family: 'Courier New', monospace;
 }
