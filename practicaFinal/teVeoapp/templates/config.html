@@ -44,17 +44,21 @@
                             </select>
                         </div>
                         <div class="text-center">
-                            <button type="submit" class="btn custom-gray-bg text-white">Iniciar Sesión</button>
+                            <button type="submit" class="btn custom-gray-bg text-white mt-3 mb-3">Iniciar Sesión</button>
                         </div>
                     </form>
 
                     <form method="POST" action="{% url 'set_session' %}">
                         {% csrf_token %}
-                        <label for="auth_link">Enlace de autorización:</label>
+                        <label for="auth_link">Enlace de autenticación:</label>
                         <input type="text" id="auth_link" name="auth_link">
-                        <input type="submit" value="Establecer sesión">
+                        <button type="submit" class="btn custom-gray-bg text-white">Establecer sesión</button>
                     </form>
-                    
+
+                    <div class="text-center">
+                        <a href="{% url 'auth_link' %}" class="btn custom-gray-bg text-white mt-3">Generar enlace de autenticación</a>
+                    </div>
+
                 </div>
             </div>
         </div>

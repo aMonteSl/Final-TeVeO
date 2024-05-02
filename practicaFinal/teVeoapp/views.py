@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.template import loader
-from .models import Camera, Comment
+from .models import Camera, Comment, Token
 from django.utils import timezone
 from .manageMedia import * # Importar todas las funciones de media_operations
 from .manageUser import get_user_config
@@ -10,52 +10,88 @@ from .manageOrder import * # Importar todas las funciones de manageOrder
 from django.db.models import Count
 import time
 from .forms import ConfigForm
-from urllib.parse import urlparse
+from urllib.parse import urlparse, parse_qs
 from importlib import import_module
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import User
+from django.contrib.sessions.models import Session
+from django.urls import reverse
 
 # Create your views here.
 
 SELECTED_XML = "selected_xml"
 
+def generate_auth_link(request):
+    """
+    Genera un enlace de autorización para la sesión actual.
+    """
+    auth_token = request.session.get('auth_token')
+    if auth_token is None:
+        # Si no hay un token de autenticación, crea uno
+        user = User.objects.get(username=request.session['username'])
+        token, created = Token.objects.get_or_create(user=user)
+        if created:
+            token.token = default_token_generator.make_token(user)
+            token.font_size = request.session['font_size']
+            token.font_family = request.session['font_family']
+            token.save()
+        auth_token = token.token
+        request.session['auth_token'] = auth_token
+    auth_link = request.build_absolute_uri(reverse('set_session')) + f'?auth_token={auth_token}'
+    return JsonResponse({'auth_link': auth_link})
+
 def set_session(request):
     """
-    Establece la sesión actual en la sesión con el identificador de sesión en el enlace de autorización.
+    Establece la sesión actual en la sesión con el identificador de sesión en la URL.
     """
     if request.method == 'POST':
         auth_link = request.POST.get('auth_link')
-        session_key = urlparse(auth_link).query
-        engine = import_module(settings.SESSION_ENGINE)
-        session = engine.SessionStore(session_key)
-        if session.exists(session.session_key):
-            request.session = session
-        else:
-            messages.error(request, 'El enlace de autorización no es válido.')
+        if auth_link is not None:
+            url = urlparse(auth_link)
+            auth_token = parse_qs(url.query).get('auth_token', [None])[0]
+            print(f"Token de autorización: {auth_token}")
+            if auth_token is not None:
+                try:
+                    token = Token.objects.get(token=auth_token)
+                    request.session['username'] = token.user.username
+                    request.session['font_size'] = token.font_size
+                    request.session['font_family'] = token.font_family
+                    print(f"Nombre de usuario: {token.user.username}")
+                    print(f"Tamaño de fuente: {token.font_size}")
+                    print(f"Familia de fuentes: {token.font_family}")
+
+                except Token.DoesNotExist:
+                    messages.error(request, 'El enlace de autorización no es válido.')
     return redirect('index')
 
 def config(request):
-    # If es un post request, se obtienen los datos del formulario y se guardan en la sesion
     if request.method == 'POST':
-        #print("Recibiendo datos del formulario")
-        # Se crea un objeto de tipo ConfigForm con los datos del formulario
         form = ConfigForm(request.POST)
         if form.is_valid():
-            request.session['username'] = form.cleaned_data['username']
-            request.session['font_size'] = form.cleaned_data['font_size']
-            request.session['font_family'] = form.cleaned_data['font_family']
-            #print("Redirigiendo a la página principal")
-            # Redirigir a la página principal
+            username = form.cleaned_data['username']
+            font_size = form.cleaned_data['font_size']
+            font_family = form.cleaned_data['font_family']
+            request.session['username'] = username
+            request.session['font_size'] = font_size
+            request.session['font_family'] = font_family
+            user, created = User.objects.get_or_create(username=username)
+            if user is not None:
+                token, created = Token.objects.get_or_create(user=user)
+                if created:
+                    token.token = default_token_generator.make_token(user)
+                token.font_size = font_size
+                token.font_family = font_family
+                token.save()
+                request.session['auth_token'] = token.token
+            for token in Token.objects.all():
+                print(f"Token: {token.token}")
             return HttpResponseRedirect('/')
         else:
-            # Si el formulario no es válido, se muestran los errores en la consola
             print(form.errors)
     else:
-        # Si no es un post request, se crea un formulario vacio
         form = ConfigForm()
-    #print("Mostrando la página de configuración")
-    #print(f"{request.method}")
-    # En caso de que no sea un post request, o no sea valido, se muestra la página de configuración
     return render(request, 'config.html', {'form': form})
 
 
@@ -309,17 +345,7 @@ def cameras_json():
         })
     return JsonResponse(data, safe=False)
 
-def generate_auth_link(request):
-    """
-    Genera un enlace de autorización para la sesión actual.
-    """
-    session_key = request.session.session_key
-    if session_key is None:
-        # Si no hay una sesión, crea una
-        request.session.create()
-        session_key = request.session.session_key
-    auth_link = request.build_absolute_uri('/') + '?' + session_key
-    return JsonResponse({'auth_link': auth_link})
+
 
 def help(request):
     # Hacer pagina de ayuda
