@@ -6,18 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Título de tu página</title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
     <link rel="icon" type="image/ico" href="{% static 'img/icon/favicon.ico' %}">
     <!-- Iconos de la camara y de comentarios sib de Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
+<body class="{{ font_size }} {{ font_family }}">
     <header >
         <div class="header-container">
             <img src="{% static 'img/resources/header.jpg' %}" class="img-fluid header" alt="...">
-            <a href="{% url 'index' %}" class="header-title">TeVeo</a>
-            <h2 class="header-subtitle"> {{ username }} </h2>
+            <a href="{% url 'index' %}" class="header-title">
+              TeVeo
+              <span class="user-text">Usuario: {{ username }}</span>
+            </a>
         </div>
     </header>
 
@@ -33,40 +35,58 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <!-- Esto es para ir a la pagina Principal -->
-              {% if request.path %}
+              {% if request.path != '/' %}
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Principal</a>
+                  <a class="nav-link active text-nav-activated" aria-current="page" href="{% url 'index' %}">Principal</a>
                 </li>
               {% else %}
                 <li class="nav-item">
-                  <span class="nav-link disabled" aria-current="page">Principal</span>
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Principal</span>
                 </li>
               {% endif %}
               
               <!-- Esto es para el texto que te lleva a todas las camaras  -->
-              {% if request.path != '/cameras/' %}
+              {% if request.path != '/camaras/' %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'mainCameras' %}">Cámaras</a>
+                  <a class="nav-link active text-nav-activated" href="{% url 'mainCameras' %}">Cámaras</a>
                 </li>
               {% else %}
                 <li class="nav-item">
-                  <span class="nav-link disabled" aria-current="page">Cámaras</span>
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Cámaras</span>
                 </li>
               {% endif %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
+
+              {% if request.path != '/config/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" href="{% url 'config' %}">Configuración</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Configuración</span>
+                </li>
+              {% endif %}
+
+              {% if request.path != '/ayuda/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" href="{% url 'ayuda' %}">Ayuda</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Ayuda</span>
+                </li>
+              {% endif %}
+
+              {% if request.path != '/admin/' %}
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: rebeccapurple" href="{% url 'admin:index' %}">Admin</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                    <span class="nav-link disabled text-nav-desactivated" aria-current="page">Admin</span>
+                </li>
+              {% endif %}
+              
+              
             </ul>
             
           </div>

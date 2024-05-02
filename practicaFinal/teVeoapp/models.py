@@ -24,6 +24,8 @@ class Camera(models.Model):
         return f'{self.source_id}{self.id} - {self.name}'
 
 class Comment(models.Model):
+    # Atributo que indica la persona que ha hecho el comentario
+    name = models.CharField(max_length=100)
     # Comentario de la camara
     camera = models.ForeignKey(Camera, on_delete=models.CASCADE)
     # Comentario, con blanck=False, no se puede dejar vacio
@@ -34,4 +36,4 @@ class Comment(models.Model):
     img_path_comment = models.CharField(max_length=200)
     
     def __str__(self):
-        return f'{self.camera} - {self.comment} - {self.date}'
+        return f'{self.camera} - {self.name} - {self.comment} - {self.date}'

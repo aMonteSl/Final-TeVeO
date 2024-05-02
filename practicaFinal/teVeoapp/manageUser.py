@@ -1,6 +1,6 @@
 
 DEFAULT_FONT_SIZE = "font-size-estandar"
-DEFAULT_FONT_FAMILY = "Roboto"
+DEFAULT_FONT_FAMILY = "font-family-roboto"
 DEFAULT_NAME = "Anónimo"
 
 
@@ -28,15 +28,17 @@ def manageSize(request):
 def manageFamily(request):
     family = request.session.get('font_family')
     if family == "Courier New":
-        font_family = "Courier New"
+        font_family = "font-family-courier"
     elif family == "Verdana":
-        font_family = "Verdana"
+        font_family = "font-family-verdana"
     elif family == "Times New Roman":
-        font_family = "Times New Roman"
+        font_family = "font-family-times"
     elif family == "Helvetica":
-        font_family = "Helvetica"
+        font_family = "font-family-helvetica"
     elif family == "Arial":
-        font_family = "Arial"
+        font_family = "font-family-arial"
+    elif family == "C4 Type":
+        font_family = "font-family-c4type"
     else:
         font_family = DEFAULT_FONT_FAMILY
     return font_family

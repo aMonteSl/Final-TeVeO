@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
     
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 
 {% block body %}
@@ -23,6 +23,7 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-dark" name="selected_xml" value="clean">Limpiar datos</button>
                 </form>
+                <a class="link" href="{% url 'cameras_json' %}">Cámaras en JSON</a>
             </form>
         </div>
         <div class="col-6 bg-custom-col-color text-gray-custom"> <!-- Aplicando la clase personalizada -->
@@ -53,6 +54,7 @@
                                                 <a href="{% url 'camera' camera.id %}" class="link">Página de la cámara</a>
                                                 <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica</a>
                                                 <a href="{% url 'comment' %}?camera_id={{ camera.id }}" class="link">Página de comentarios, actualmente: {{ camera.comment_set.count }}</a>
+                                                <a href="{% url 'camera_json' camera.id %}" class="link">JSON</a>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +104,8 @@
                                                     <a href="{% url 'camera' camera.id %}" class="link">Página de la cámara</a>
                                                     <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica</a>
                                                     <a href="{% url 'comment' %}?camera_id={{ camera.id }}" class="link">Página de comentarios, actualmente: {{ camera.comment_set.count }}</a>
-
+                                                    <a href="{% url 'camera_json' camera.id %}" class="link">JSON</a>
+                                                    
                                                 </div>
                                             </div>
                                         </div>

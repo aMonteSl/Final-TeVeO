@@ -34,18 +34,27 @@
                         <div class="form-group">
                             <label for="font-family">Familia de Fuentes:</label>
                             <select class="form-control" id="font-family" name="font_family">
-                                <option value="Roboto">Roboto</option>
-                                <option value="Arial">Arial</option>
-                                <option value="Times New Roman">Times New Roman</option>
-                                <option value="Verdana">Verdana</option>
-                                <option value="Helvetica">Helvetica</option>
-                                <option value="Courier New">Courier New</option>
+                                <option value="Roboto" style="font-family: Roboto;">Roboto</option>
+                                <option value="Arial" style="font-family: Arial;">Arial</option>
+                                <option value="Times New Roman" style="font-family: 'Times New Roman';">Times New Roman</option>
+                                <option value="Verdana" style="font-family: Verdana;">Verdana</option>
+                                <option value="Helvetica" style="font-family: Helvetica;">Helvetica</option>
+                                <option value="Courier New" style="font-family: 'Courier New';">Courier New</option>
+                                <option value="C4 Type" style="font-family: 'C4 Type';">C4 Type</option>
                             </select>
                         </div>
                         <div class="text-center">
                             <button type="submit" class="btn custom-gray-bg text-white">Iniciar Sesión</button>
                         </div>
                     </form>
+
+                    <form method="POST" action="{% url 'set_session' %}">
+                        {% csrf_token %}
+                        <label for="auth_link">Enlace de autorización:</label>
+                        <input type="text" id="auth_link" name="auth_link">
+                        <input type="submit" value="Establecer sesión">
+                    </form>
+                    
                 </div>
             </div>
         </div>

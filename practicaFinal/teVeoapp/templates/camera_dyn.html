@@ -23,6 +23,7 @@
             <h1 style="margin-top: 20px; text-align: center;">Sección de Comentarios</h1>
         </div>
         <form action="" method="POST" class="form-group row" style="margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            {% csrf_token %}
             <div class="col-9">
                 <label for="commentBody">Introduce un comentario para esta página:</label>
                 <input type="text" id="commentBody" name="body" class="form-control" placeholder="Escribe tu comentario aquí...">

@@ -5,7 +5,7 @@
     {% if comments %}
     {% for comment in comments %}
         <div class="text-white custom-gray-bg" style="border-radius: 10px; padding: 20px; margin-top: 20px;">
-            <h5>{{ comment.comment }}</h5>
+            <h5>{{ forloop.counter }}. Comentario de {{ comment.name }}: {{ comment.comment }}</h5>
             <p><small>Fecha: {{ comment.date }}</small></p>
         </div>
     {% endfor %}

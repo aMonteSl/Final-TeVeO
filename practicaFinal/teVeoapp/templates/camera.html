@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 <!-- index.html -->
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 
@@ -10,7 +10,9 @@
     <div class="col-md-12 text-center ">
         <h1 style="color: white; margin-top: 20px;">{{ camera.name }}, Coordenadas:{{ camera.coordinates }}</h1> 
         <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica de la cámara</a>
+        <a href="{% url 'camera_json' camera.id %}" class="link">JSON</a>
         <a href="{% url 'comment' %}?camera_id={{ camera.id }}" class="link" style="margin-bottom: 20px;">Poner comentario a la cámara</a>
+        
     </div>
 </div>
 
@@ -50,7 +52,7 @@
                 <div class="row g-0">
                     <div class="col-md-8 d-flex align-items-center rounded custom-gray-bg">
                         <div class="card-body text-center text-white">
-                            <p class="card-text">Comentario: {{ comment.comment }}</p>
+                            <p class="card-text">Comentario de {{ comment.name }}: {{ comment.comment }}</p>
                             <p class="card-text">ID de la cámara: {{ comment.camera.id }}</p>
                             <p class="card-text">Fecha: {{ comment.date }}</p>
                         </div>
