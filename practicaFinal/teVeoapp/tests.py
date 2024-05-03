@@ -5,7 +5,7 @@ from xml.dom.minidom import parseString
 # RequestFactory se usa para crear request falsos
 from . import manageUser
 from . import manageOrder
-from manageMedia import get_xml_files, load_cameras_from_xml1, load_cameras_from_xml2
+from manageMedia import *
 from . import views
 from .models import Camera, Comment
 
