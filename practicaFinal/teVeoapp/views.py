@@ -1,23 +1,23 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
-from django.views.decorators.csrf import csrf_exempt
-from django.template import loader
+from django.shortcuts import render, redirect
+from django.http import (
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+    Http404,
+)
 from .models import Camera, Comment, Token
 from django.utils import timezone
 from .manageMedia import *  # Importar todas las funciones de media_operations
 from .manageUser import get_user_config
 from .manageOrder import *  # Importar todas las funciones de manageOrder
-from django.db.models import Count
 import time
 from .forms import ConfigForm
 from urllib.parse import urlparse, parse_qs
-from importlib import import_module
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
-from django.contrib.sessions.models import Session
 from django.urls import reverse
+from django.core import serializers
 
 # Create your views here.
 
@@ -47,14 +47,14 @@ def generate_auth_link(request):
 
 def set_session(request):
     """
-    Establece la sesión actual en la sesión con el identificador de sesión en la URL.
+    Establece la sesión actual en la sesión
+    con el identificador de sesión en la URL.
     """
     if request.method == 'POST':
         auth_link = request.POST.get('auth_link')
         if auth_link is not None:
             url = urlparse(auth_link)
             auth_token = parse_qs(url.query).get('auth_token', [None])[0]
-            print(f"Token de autorización: {auth_token}")
             if auth_token is not None:
                 try:
                     token = Token.objects.get(token=auth_token)
@@ -90,8 +90,6 @@ def config(request):
                 token.font_family = font_family
                 token.save()
                 request.session['auth_token'] = token.token
-            for token in Token.objects.all():
-                print(f"Token: {token.token}")
             return HttpResponseRedirect('/')
         else:
             print(form.errors)
@@ -121,7 +119,8 @@ def index(request):
         'font_family': font_family,
     }
 
-    # Importante hacer con render y no con HttpResponse porque render es mas seguro y maneja mejor los errores
+    # Importante hacer con render y no con HttpResponse porque render es mas
+    # seguro y maneja mejor los errores
     return render(request, 'index.html', context)
 
 
@@ -142,7 +141,8 @@ def mainCameras(request):
     cameras = order_cameras_by_comments(order)
 
     username, font_size, font_family = get_user_config(request)
-    # print(f"Username en mainCameras: {username}, Font size: {font_size}, Font family: {font_family}")
+    # print(f"Username en mainCameras: {username},
+    # Font size: {font_size}, Font family: {font_family}")
 
     random_img = get_random_img()
     xml_files = get_xml_files()
@@ -203,7 +203,8 @@ def camera(request, id):
 def save_comment_if_post(request, camera, name):
     comment_text = request.POST.get('body')  # Cambiar 'cuerpo' a 'body'
     if comment_text:  # Verificar si comment_text no es vacío
-        # Guardar el comentario en la base de datos con la camara, comentario, fecha y la imagen de la cámara en ese momento
+        # Guardar el comentario en la base de datos con la camara, comentario,
+        # fecha y la imagen de la cámara en ese momento
         img_comment = save_img_comment(camera.img_path)
         comment = Comment(name=name, camera=camera, comment=comment_text,
                           date=timezone.now(), img_path_comment=img_comment)
@@ -271,7 +272,8 @@ def camera_dyn(request, id):
 
 def get_latest_image_url(img_path):
     """
-    Obtiene la URL de la última imagen, añadiendo un parámetro de tiempo para evitar el caché del navegador.
+    Obtiene la URL de la última imagen, añadiendo un
+    parámetro de tiempo para evitar el caché del navegador.
     """
     if img_path is None:
         print("No se encontró ninguna imagen")
@@ -315,7 +317,7 @@ def get_comments(request, id):
     return render(request, 'get_comments.html', context)
 
 
-def camera_json(id):
+def camera_json(request, id):
     """
     Devuelve los datos de la cámara especificada en formato JSON.
     """
@@ -324,34 +326,43 @@ def camera_json(id):
     except Camera.DoesNotExist:
         raise Http404("Cámara no encontrada")
 
-    # Obtener el número de comentarios de la cámara
-    num_comments = Comment.objects.filter(camera=cam).count()
+    # Obtener los comentarios de la cámara
+    comments = Comment.objects.filter(camera=cam)
+
+    # Serializar los comentarios a JSON
+    comments_json = serializers.serialize('json', comments)
 
     data = {
         'id': cam.id,
         'source_id': cam.source_id,
         'src': cam.src,
         'img_path': cam.img_path,
-        'num_comments': num_comments,
+        'num_comments': comments.count(),
+        'comments': comments_json,
     }
     return JsonResponse(data)
 
 
-def cameras_json():
+def cameras_json(request):
     """
     Devuelve los datos de todas las cámaras en formato JSON.
     """
     cameras = Camera.objects.all()
     data = []
     for cam in cameras:
-        # Obtener el número de comentarios de la cámara
-        num_comments = Comment.objects.filter(camera=cam).count()
+        # Obtener los comentarios de la cámara
+        comments = Comment.objects.filter(camera=cam)
+
+        # Serializar los comentarios a JSON
+        comments_json = serializers.serialize('json', comments)
+
         data.append({
             'id': cam.id,
             'source_id': cam.source_id,
             'src': cam.src,
             'img_path': cam.img_path,
-            'num_comments': num_comments,
+            'num_comments': comments.count(),
+            'comments': comments_json,
         })
     return JsonResponse(data, safe=False)
 

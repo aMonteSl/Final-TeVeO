@@ -4,7 +4,8 @@ from django.db.models import Count
 
 def order_cameras_by_comments(order):
     order_field = 'num_comments' if order == 'asc' else '-num_comments'
-    return Camera.objects.annotate(num_comments=Count('comment')).order_by(order_field)
+    return Camera.objects.annotate(
+        num_comments=Count('comment')).order_by(order_field)
 
 
 def order_cameras_by_time(order):

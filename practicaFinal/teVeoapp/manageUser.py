@@ -6,9 +6,10 @@ DEFAULT_NAME = "Anónimo"
 
 def manageNameLogin(request):
     username = request.session.get('username')
-    # Para ver que puede ser un valor, vacio o None, en caso de estos dos ultimos valores, se asigna el valor por defecto
+    # Para ver que puede ser un valor, vacio o None,
+    # en caso de estos dos ultimos valores, se asigna el valor por defecto
     # print(f"Name: {username}")
-    if username == "" or username == None:
+    if username == "" or username is None:
         username = DEFAULT_NAME
     # Para comprobar que se ha guardado el nombre en la consola
     # print(f"Name: {username}")

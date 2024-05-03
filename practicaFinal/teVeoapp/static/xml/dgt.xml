@@ -7,7 +7,7 @@
     </_0:supplierIdentification>
   </_0:exchange>
   <_0:payloadPublication lang="es" xsi:type="_0:GenericPublication" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <_0:publicationTime>2024-05-02T18:00:21.142+02:00</_0:publicationTime>
+    <_0:publicationTime>2024-05-03T10:00:19.910+02:00</_0:publicationTime>
     <_0:publicationCreator>
       <_0:country>es</_0:country>
       <_0:nationalIdentifier>dgt_its</_0:nationalIdentifier>
@@ -20,7 +20,7 @@
           <_0:informationStatus>real</_0:informationStatus>
         </_0:headerInformation>
         <_0:cctvCameraList id="GUID_Inventario_Camaras" version="unversioned">
-          <_0:cctvCameraListVersionTime>2024-05-02T18:00:21.142+02:00</_0:cctvCameraListVersionTime>
+          <_0:cctvCameraListVersionTime>2024-05-03T10:00:19.911+02:00</_0:cctvCameraListVersionTime>
           <_0:cctvCameraMetadataRecord id="GUID_CAM_2" version="22">
             <_0:cctvCameraIdentification>CAMARA-CGT VALLADOLID_2</_0:cctvCameraIdentification>
             <_0:cctvCameraSerialNumber>2</_0:cctvCameraSerialNumber>

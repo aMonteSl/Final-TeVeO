@@ -3,7 +3,8 @@ from .views import *
 from .manageUser import *
 # Create your tests here.
 
-# Tengo que hacer test unitarios(prueba de metodos) y extremo a extremo(los que simulan peticiones get/post)
+# Tengo que hacer test unitarios(prueba de metodos) y extremo a
+# extremo(los que simulan peticiones get/post)
 
 # Test a todos los metodos de manageUser.py
 

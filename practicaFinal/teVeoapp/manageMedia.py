@@ -13,10 +13,15 @@ SOURCE_ID_CCTV = 'CCTV-'
 SOURCE_ID_DGT = 'DGT-'
 
 # Definir las URLs como constantes globales
-URL_LISTADO1 = 'https://gitlab.eif.urjc.es/cursosweb/2023-2024/final-teveo/-/raw/main/listado1.xml'
-URL_LISTADO2 = 'https://gitlab.eif.urjc.es/cursosweb/2023-2024/final-teveo/-/raw/main/listado2.xml'
-URL_CCTV = 'http://datos.madrid.es/egob/catalogo/202088-0-trafico-camaras.kml'
-URL_DGT = 'https://infocar.dgt.es/datex2/dgt/CCTVSiteTablePublication/all/content.xml'
+URL_LISTADO1 = ('https://gitlab.eif.urjc.es/cursosweb/2023-2024/'
+                'final-teveo/-/raw/main/listado1.xml')
+URL_LISTADO2 = ('https://gitlab.eif.urjc.es/cursosweb/2023-2024/'
+                'final-teveo/-/raw/main/listado2.xml')
+URL_CCTV = ('http://datos.madrid.es/egob/catalogo/202088-0-trafico-'
+            'camaras.kml')
+URL_DGT = ('https://infocar.dgt.es/datex2/dgt/CCTVSiteTablePublication/'
+           'all/content.xml')
+
 
 # Nombre de los archivos XML o KML
 LIST1 = 'listado1.xml'
@@ -30,7 +35,8 @@ def get_xml_files():
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Une el directorio base con la ruta específica 'teVeoapp/static/xml'
     directory = os.path.join(base_dir, 'teVeoapp/static/xml')
-    # Crea una lista de todos los archivos en el directorio que terminan en '.xml' o '.kml'
+    # Crea una lista de todos los archivos en el directorio que terminan en
+    # '.xml' o '.kml'
     result = [f for f in os.listdir(directory) if f.endswith(
         '.xml') or f.endswith('.kml')]
     # Invierte el orden de la lista
@@ -61,13 +67,17 @@ def load_cameras_from_xml2(camera):
     try:
         # Obtiene el atributo 'id' del elemento 'camera'
         id = camera.getAttribute('id')
-        # Obtiene el contenido del primer elemento 'url' dentro del elemento 'camera'
+        # Obtiene el contenido del primer elemento 'url' dentro del elemento
+        # 'camera'
         src = camera.getElementsByTagName('url')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'info' dentro del elemento 'camera'
+        # Obtiene el contenido del primer elemento 'info' dentro del elemento
+        # 'camera'
         name = camera.getElementsByTagName('info')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'latitude' dentro del elemento 'camera'
+        # Obtiene el contenido del primer elemento 'latitude' dentro del
+        # elemento 'camera'
         latitude = camera.getElementsByTagName('latitude')[0].firstChild.data
-        # Obtiene el contenido del primer elemento 'longitude' dentro del elemento 'camera'
+        # Obtiene el contenido del primer elemento 'longitude' dentro del
+        # elemento 'camera'
         longitude = camera.getElementsByTagName('longitude')[0].firstChild.data
         # Combina la latitud y la longitud en una cadena, separada por una coma
         coordinates = f'{latitude},{longitude}'
@@ -89,23 +99,28 @@ def load_cameras_from_cctv(cameras):
             # Obtener el número, nombre y descripción
             number = placemark.getElementsByTagName(
                 'Data')[0].getElementsByTagName('Value')[0].firstChild.data
-            name = placemark.getElementsByTagName('Data')[1].getElementsByTagName('Value')[
+            name = placemark.getElementsByTagName(
+                'Data')[1].getElementsByTagName('Value')[
                 0].firstChild.data
-            description = placemark.getElementsByTagName('description')[
+            description = placemark.getElementsByTagName(
+                'description')[
                 0].firstChild.data
 
-            # La descripción contiene la URL de la imagen de la cámara en un elemento img
+            # La descripción contiene la URL de la imagen
+            # de la cámara en un elemento img
             # Podemos extraer la URL utilizando una expresión regular
             img_url_match = re.search('src=(https://[^ ]+)', description)
             if img_url_match is None:
                 print(
-                    f"No se pudo encontrar la URL de la imagen para la cámara {number}")
+                    f"""No se pudo encontrar la URL
+                    de la imagen para la cámara {number}""")
                 continue
             img_url = img_url_match.group(1)
 
             # Obtener las coordenadas
             coordinates = placemark.getElementsByTagName(
-                'Point')[0].getElementsByTagName('coordinates')[0].firstChild.data
+                'Point')[0].getElementsByTagName(
+                    'coordinates')[0].firstChild.data
             # Hay que invertir las coordenadas
             coordinates = ','.join(coordinates.split(',')[::-1])
             # Eliminar el primer elemento de las coordenadas
@@ -142,7 +157,9 @@ def load_cameras_from_dgt(camera):
         # Definir el id de la fuente
         source_id = SOURCE_ID_DGT
         # Devolver los datos extraídos
-        return source_id, camera_id, image_url, camera_name, f'{latitude},{longitude}'
+        return (source_id, camera_id, image_url, camera_name,
+                f'{latitude},{longitude}')
+
     except IndexError:
         print("Error: No se pudo obtener uno o más elementos del archivo XML.")
         return None
@@ -174,7 +191,8 @@ def download_xml_files(xml_file, file_path):
 
 def create_and_save_camera(sourc_id, id, src, name, coordinates):
     """
-    Crea una nueva cámara y la guarda en la base de datos si no existe ya una cámara con el mismo id.
+    Crea una nueva cámara y la guarda en la base de datos
+    si no existe ya una cámara con el mismo id.
     """
     if not Camera.objects.filter(id=id).exists():
         cam = Camera(source_id=sourc_id, id=id, src=src,
@@ -241,14 +259,16 @@ def download_and_save_image(cam):
         cam.img_path = img_path
         cam.save()
         print(
-            f"Successfully saved image for camera with id {cam.id} and path {img_path}")
+            f"""Successfully saved image for
+            camera with id {cam.id} and path {img_path}""")
     except Exception as e:
         print(f"Failed to process camera with id {cam.id}. Error: {str(e)}")
 
 
 def get_img_of_cameras(xml_file):
     """
-    Obtiene las cámaras del archivo XML especificado y descarga y guarda sus imágenes.
+    Obtiene las cámaras del archivo XML especificado
+      y descarga y guarda sus imágenes.
     """
     # Determinar el id de la fuente en función del nombre del archivo XML
     if xml_file == LIST1:
@@ -333,7 +353,8 @@ def clear_all():
 def save_img_comment(path):
     """
     Copia la imagen del path a la carpeta static/img/comments.
-    La copia tendrá como nombre el nombre de la imagen original con un sufijo que sea el número de comentario de dicha imagen.
+    La copia tendrá como nombre el nombre de la imagen original
+      con un sufijo que sea el número de comentario de dicha imagen.
     """
     try:
         # Obtener el directorio base y el directorio de comentarios
@@ -350,7 +371,8 @@ def save_img_comment(path):
 
         # Copiar la imagen al nuevo path
         with open(full_path, 'wb') as f:
-            with open(os.path.join(base_dir, 'teVeoapp/static', path), 'rb') as f2:
+            image_path = os.path.join(base_dir, 'teVeoapp/static', path)
+            with open(image_path, 'rb') as f2:
                 f.write(f2.read())
 
         return new_path
