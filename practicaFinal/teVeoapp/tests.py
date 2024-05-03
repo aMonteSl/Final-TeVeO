@@ -1,54 +1,64 @@
-from django.test import TestCase, Client
-from .views import *
-from .manageUser import *
-# Create your tests here.
+from django.test import TestCase, RequestFactory 
+# RequestFactory se usa para crear request falsos
+from . import manageUser
+from . import views
 
-# Tengo que hacer test unitarios(prueba de metodos) y extremo a
-# extremo(los que simulan peticiones get/post)
-
-# Test a todos los metodos de manageUser.py
-
-
-class TestManageUser(TestCase):
+class ManageUserTest(TestCase):
     def setUp(self):
-        self.client = Client()
-        self.request = self.client.get('/')
-        self.request.session['username'] = "Pepe"
-        self.request.session['font_size'] = "small"
-        self.request.session['font_family'] = "Verdana"
-        get_user_config(self.request)
+        self.factory = RequestFactory()
 
     def test_manageNameLogin(self):
-        self.assertEqual(manageNameLogin(self.request), "Pepe")
-        self.request.session['username'] = ""
-        self.assertEqual(manageNameLogin(self.request), DEFAULT_NAME)
-        self.request.session['username'] = None
-        self.assertEqual(manageNameLogin(self.request), DEFAULT_NAME)
+        request = self.factory.get('/')
+        request.session = {'username': 'TestUser'}
+        self.assertEqual(manageUser.manageNameLogin(request), 'TestUser')
+
+        request.session = {'username': ''}
+        self.assertEqual(manageUser.manageNameLogin(request), manageUser.DEFAULT_NAME)
+
+        request.session = {}
+        self.assertEqual(manageUser.manageNameLogin(request), manageUser.DEFAULT_NAME)
 
     def test_manageSize(self):
-        self.assertEqual(manageSize(self.request), "font-size-pequena")
-        self.request.session['font_size'] = "large"
-        self.assertEqual(manageSize(self.request), "font-size-grande")
-        self.request.session['font_size'] = "medium"
-        self.assertEqual(manageSize(self.request), DEFAULT_FONT_SIZE)
-        self.request.session['font_size'] = None
-        self.assertEqual(manageSize(self.request), DEFAULT_FONT_SIZE)
-        manageSize(self.request)
+        request = self.factory.get('/')
+        request.session = {'font_size': 'small'}
+        self.assertEqual(manageUser.manageSize(request), 'font-size-pequena')
+
+        request.session = {'font_size': 'large'}
+        self.assertEqual(manageUser.manageSize(request), 'font-size-grande')
+
+        request.session = {'font_size': 'medium'}
+        self.assertEqual(manageUser.manageSize(request), manageUser.DEFAULT_FONT_SIZE)
+
+        request.session = {}
+        self.assertEqual(manageUser.manageSize(request), manageUser.DEFAULT_FONT_SIZE)
 
     def test_manageFamily(self):
-        self.assertEqual(manageFamily(self.request), "font-family-verdana")
-        self.request.session['font_family'] = "Courier New"
-        self.assertEqual(manageFamily(self.request), "font-family-courier")
-        self.request.session['font_family'] = "Verdana"
-        self.assertEqual(manageFamily(self.request), "font-family-verdana")
-        self.request.session['font_family'] = "Times New Roman"
-        self.assertEqual(manageFamily(self.request), "font-family-times")
-        self.request.session['font_family'] = "Helvetica"
-        self.assertEqual(manageFamily(self.request), "font-family-helvetica")
-        self.request.session['font_family'] = "Arial"
-        self.assertEqual(manageFamily(self.request), "font-family-arial")
-        self.request.session['font_family'] = "C4 Type"
-        self.assertEqual(manageFamily(self.request), "font-family-c4type")
-        self.request.session['font_family'] = None
-        self.assertEqual(manageFamily(self.request), DEFAULT_FONT_FAMILY)
-        manageFamily(self.request)
+        request = self.factory.get('/')
+        request.session = {'font_family': 'Courier New'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-courier')
+
+        request.session = {'font_family': 'Verdana'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-verdana')
+
+        request.session = {'font_family': 'Times New Roman'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-times')
+
+        request.session = {'font_family': 'Helvetica'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-helvetica')
+
+        request.session = {'font_family': 'Arial'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-arial')
+
+        request.session = {'font_family': 'C4 Type'}
+        self.assertEqual(manageUser.manageFamily(request), 'font-family-c4type')
+
+        request.session = {'font_family': 'Roboto'}
+        self.assertEqual(manageUser.manageFamily(request), manageUser.DEFAULT_FONT_FAMILY)
+
+        request.session = {}
+        self.assertEqual(manageUser.manageFamily(request), manageUser.DEFAULT_FONT_FAMILY)
+
+    def test_get_user_config(self):
+        request = self.factory.get('/')
+        request.session = {'username': 'TestUser', 'font_size': 'small', 'font_family': 'Courier New'}
+        self.assertEqual(manageUser.get_user_config(request), ('TestUser', 'font-size-pequena', 'font-family-courier'))
