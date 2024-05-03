@@ -19,9 +19,9 @@ class Camera(models.Model):
     # Directorio donde se guardan las imagenes
     img_path = models.CharField(max_length=200)
 
-
     def __str__(self):
         return f'{self.source_id}{self.id} - {self.name}'
+
 
 class Comment(models.Model):
     # Atributo que indica la persona que ha hecho el comentario
@@ -34,9 +34,10 @@ class Comment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     # Imagen de la cámara en el momento del comentario
     img_path_comment = models.CharField(max_length=200)
-    
+
     def __str__(self):
         return f'{self.camera} - {self.name} - {self.comment} - {self.date}'
+
 
 class Token(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

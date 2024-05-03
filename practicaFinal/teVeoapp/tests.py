@@ -7,6 +7,7 @@ from .manageUser import *
 
 # Test a todos los metodos de manageUser.py
 
+
 class TestManageUser(TestCase):
     def setUp(self):
         self.client = Client()
@@ -23,7 +24,6 @@ class TestManageUser(TestCase):
         self.request.session['username'] = None
         self.assertEqual(manageNameLogin(self.request), DEFAULT_NAME)
 
-        
     def test_manageSize(self):
         self.assertEqual(manageSize(self.request), "font-size-pequena")
         self.request.session['font_size'] = "large"
@@ -51,4 +51,3 @@ class TestManageUser(TestCase):
         self.request.session['font_family'] = None
         self.assertEqual(manageFamily(self.request), DEFAULT_FONT_FAMILY)
         manageFamily(self.request)
-        

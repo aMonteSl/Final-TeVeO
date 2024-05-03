@@ -1,10 +1,13 @@
-import os, re, requests, random
+import os
+import re
+import requests
+import random
 import xml.dom.minidom
 from urllib.request import urlopen
 from .models import Camera
 
 # Definir los identificadores de las fuentes de datos
-SOURCE_ID_LIS1 =  'LIS1-'
+SOURCE_ID_LIS1 = 'LIS1-'
 SOURCE_ID_LIS2 = 'LIS2-'
 SOURCE_ID_CCTV = 'CCTV-'
 SOURCE_ID_DGT = 'DGT-'
@@ -28,20 +31,23 @@ def get_xml_files():
     # Une el directorio base con la ruta específica 'teVeoapp/static/xml'
     directory = os.path.join(base_dir, 'teVeoapp/static/xml')
     # Crea una lista de todos los archivos en el directorio que terminan en '.xml' o '.kml'
-    result = [f for f in os.listdir(directory) if f.endswith('.xml') or f.endswith('.kml')]
+    result = [f for f in os.listdir(directory) if f.endswith(
+        '.xml') or f.endswith('.kml')]
     # Invierte el orden de la lista
     result.reverse()
     return result
+
 
 def load_cameras_from_xml1(camera):
     try:
         id = camera.getElementsByTagName('id')[0].firstChild.data
         src = camera.getElementsByTagName('src')[0].firstChild.data
         name = camera.getElementsByTagName('lugar')[0].firstChild.data
-        coordinates = camera.getElementsByTagName('coordenadas')[0].firstChild.data
+        coordinates = camera.getElementsByTagName('coordenadas')[
+            0].firstChild.data
         # A las coordenadas les tengo que dar la vuelta, vienen al reves
         coordinates = ','.join(coordinates.split(',')[::-1])
-        source_id =  SOURCE_ID_LIS1
+        source_id = SOURCE_ID_LIS1
         return source_id, id, src, name, coordinates
     except IndexError:
         print("Error: No se pudo obtener uno o más elementos del archivo XML.")
@@ -49,6 +55,7 @@ def load_cameras_from_xml1(camera):
     except Exception as e:
         print(f"Error inesperado: {e}")
         return None
+
 
 def load_cameras_from_xml2(camera):
     try:
@@ -75,24 +82,30 @@ def load_cameras_from_xml2(camera):
         return None
     return source_id, id, src, name, coordinates
 
+
 def load_cameras_from_cctv(cameras):
     for placemark in cameras:
         try:
             # Obtener el número, nombre y descripción
-            number = placemark.getElementsByTagName('Data')[0].getElementsByTagName('Value')[0].firstChild.data
-            name = placemark.getElementsByTagName('Data')[1].getElementsByTagName('Value')[0].firstChild.data
-            description = placemark.getElementsByTagName('description')[0].firstChild.data
+            number = placemark.getElementsByTagName(
+                'Data')[0].getElementsByTagName('Value')[0].firstChild.data
+            name = placemark.getElementsByTagName('Data')[1].getElementsByTagName('Value')[
+                0].firstChild.data
+            description = placemark.getElementsByTagName('description')[
+                0].firstChild.data
 
             # La descripción contiene la URL de la imagen de la cámara en un elemento img
             # Podemos extraer la URL utilizando una expresión regular
             img_url_match = re.search('src=(https://[^ ]+)', description)
             if img_url_match is None:
-                print(f"No se pudo encontrar la URL de la imagen para la cámara {number}")
+                print(
+                    f"No se pudo encontrar la URL de la imagen para la cámara {number}")
                 continue
             img_url = img_url_match.group(1)
 
             # Obtener las coordenadas
-            coordinates = placemark.getElementsByTagName('Point')[0].getElementsByTagName('coordinates')[0].firstChild.data
+            coordinates = placemark.getElementsByTagName(
+                'Point')[0].getElementsByTagName('coordinates')[0].firstChild.data
             # Hay que invertir las coordenadas
             coordinates = ','.join(coordinates.split(',')[::-1])
             # Eliminar el primer elemento de las coordenadas
@@ -100,10 +113,12 @@ def load_cameras_from_cctv(cameras):
 
             # Añadir la cámara a la base de datos si no existe
             if not Camera.objects.filter(id=number).exists():
-                cam = Camera(source_id=SOURCE_ID_CCTV, id=number, src=img_url, name=name, coordinates=coordinates)
+                cam = Camera(source_id=SOURCE_ID_CCTV, id=number,
+                             src=img_url, name=name, coordinates=coordinates)
                 cam.save()
             else:
-                print(f'La cámara con id {number} ya existe en la base de datos')
+                print(
+                    f'La cámara con id {number} ya existe en la base de datos')
         except Exception as e:
             print(f"Error al procesar la cámara {number}: {e}")
 
@@ -113,13 +128,17 @@ def load_cameras_from_dgt(camera):
         # Obtener el id de la cámara
         camera_id = camera.getAttribute('id')
         # Obtener el nombre de la cámara
-        camera_name = camera.getElementsByTagName('_0:cctvCameraIdentification')[0].firstChild.data
+        camera_name = camera.getElementsByTagName(
+            '_0:cctvCameraIdentification')[0].firstChild.data
         # Obtener la URL de la imagen de la cámara
-        image_url = camera.getElementsByTagName('_0:urlLinkAddress')[0].firstChild.data
+        image_url = camera.getElementsByTagName(
+            '_0:urlLinkAddress')[0].firstChild.data
         # Obtener la latitud de la cámara
-        latitude = camera.getElementsByTagName('_0:latitude')[0].firstChild.data
+        latitude = camera.getElementsByTagName(
+            '_0:latitude')[0].firstChild.data
         # Obtener la longitud de la cámara
-        longitude = camera.getElementsByTagName('_0:longitude')[0].firstChild.data
+        longitude = camera.getElementsByTagName(
+            '_0:longitude')[0].firstChild.data
         # Definir el id de la fuente
         source_id = SOURCE_ID_DGT
         # Devolver los datos extraídos
@@ -130,6 +149,7 @@ def load_cameras_from_dgt(camera):
     except Exception as e:
         print(f"Error inesperado: {e}")
         return None
+
 
 def download_xml_files(xml_file, file_path):
     # Determinar la URL correcta en función del nombre del archivo XML
@@ -147,19 +167,22 @@ def download_xml_files(xml_file, file_path):
     # Escribir el contenido de la respuesta en un archivo
     with open(file_path, 'wb') as f:
         f.write(response.content)
-    
+
     # Imprimir un mensaje de éxito
     print(f"Successfully downloaded {xml_file} from {url}")
+
 
 def create_and_save_camera(sourc_id, id, src, name, coordinates):
     """
     Crea una nueva cámara y la guarda en la base de datos si no existe ya una cámara con el mismo id.
     """
     if not Camera.objects.filter(id=id).exists():
-        cam = Camera(source_id= sourc_id, id=id, src=src, name=name, coordinates=coordinates)
+        cam = Camera(source_id=sourc_id, id=id, src=src,
+                     name=name, coordinates=coordinates)
         cam.save()
     else:
         print(f'The camera with id {id} already exists in the database.')
+
 
 def load_cameras_from_xml(xml_file):
     """
@@ -169,24 +192,26 @@ def load_cameras_from_xml(xml_file):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     directory = os.path.join(base_dir, 'teVeoapp/static/xml')
     file_path = os.path.join(directory, xml_file)
-    
+
     # Descargar el archivo XML
     download_xml_files(xml_file, file_path)
-    
+
     # Parsear el archivo XML
     dom = xml.dom.minidom.parse(file_path)
     root = dom.documentElement
-    
+
     # Cargar las cámaras del archivo XML en la base de datos
     if xml_file == LIST1:
         cameras = root.getElementsByTagName('camara')
         for camera in cameras:
-            sourc_id, id, src, name, coordinates = load_cameras_from_xml1(camera)
+            sourc_id, id, src, name, coordinates = load_cameras_from_xml1(
+                camera)
             create_and_save_camera(sourc_id, id, src, name, coordinates)
     elif xml_file == LIST2:
         cameras = root.getElementsByTagName('cam')
         for camera in cameras:
-            sourc_id, id, src, name, coordinates = load_cameras_from_xml2(camera)
+            sourc_id, id, src, name, coordinates = load_cameras_from_xml2(
+                camera)
             create_and_save_camera(sourc_id, id, src, name, coordinates)
     elif xml_file == CCTV:
         cameras = root.getElementsByTagName('Placemark')
@@ -194,10 +219,10 @@ def load_cameras_from_xml(xml_file):
     elif xml_file == DGT:
         cameras = root.getElementsByTagName('_0:cctvCameraMetadataRecord')
         for camera in cameras:
-            sourc_id, id, src, name, coordinates = load_cameras_from_dgt(camera)
+            sourc_id, id, src, name, coordinates = load_cameras_from_dgt(
+                camera)
             create_and_save_camera(sourc_id, id, src, name, coordinates)
 
-        
 
 def download_and_save_image(cam):
     """
@@ -209,14 +234,17 @@ def download_and_save_image(cam):
         response = urlopen(cam.src)
         img = response.read()
         img_path = os.path.join('img/data', f'{cam.source_id}{cam.id}.jpg')
-        full_img_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'teVeoapp/static', img_path)
+        full_img_path = os.path.join(os.path.dirname(os.path.dirname(
+            os.path.abspath(__file__))), 'teVeoapp/static', img_path)
         with open(full_img_path, 'wb') as f:
             f.write(img)
         cam.img_path = img_path
         cam.save()
-        print(f"Successfully saved image for camera with id {cam.id} and path {img_path}")
+        print(
+            f"Successfully saved image for camera with id {cam.id} and path {img_path}")
     except Exception as e:
         print(f"Failed to process camera with id {cam.id}. Error: {str(e)}")
+
 
 def get_img_of_cameras(xml_file):
     """
@@ -224,7 +252,7 @@ def get_img_of_cameras(xml_file):
     """
     # Determinar el id de la fuente en función del nombre del archivo XML
     if xml_file == LIST1:
-        cameras = Camera.objects.filter(source_id= SOURCE_ID_LIS1)
+        cameras = Camera.objects.filter(source_id=SOURCE_ID_LIS1)
     elif xml_file == LIST2:
         cameras = Camera.objects.filter(source_id=SOURCE_ID_LIS2)
     elif xml_file == CCTV:
@@ -235,6 +263,7 @@ def get_img_of_cameras(xml_file):
     # Descargar y guardar la imagen de cada cámara
     for cam in cameras:
         download_and_save_image(cam)
+
 
 def get_actual_img(id):
     """
@@ -259,23 +288,25 @@ def get_random_img():
     # Obtener el directorio de las imágenes
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     directory = os.path.join(base_dir, 'teVeoapp/static/img/data')
-    
+
     # Obtener la lista de archivos .jpg en el directorio
     result = [f for f in os.listdir(directory) if f.endswith('.jpg')]
-    
+
     # Si hay al menos una imagen, seleccionar una aleatoriamente y devolverla
     if result:
         return random.choice(result)
-    
+
     # Si no hay imágenes, devolver None
     return None
-    
+
+
 def delete_files_in_directory(directory):
     """
     Elimina todos los archivos en el directorio especificado.
     """
     for f in os.listdir(directory):
         os.remove(os.path.join(directory, f))
+
 
 def clear_all():
     """
@@ -298,6 +329,7 @@ def clear_all():
 
     print("All images deleted")
 
+
 def save_img_comment(path):
     """
     Copia la imagen del path a la carpeta static/img/comments.
@@ -307,19 +339,20 @@ def save_img_comment(path):
         # Obtener el directorio base y el directorio de comentarios
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         directory = os.path.join(base_dir, 'teVeoapp/static/img/comments')
-        
+
         # Obtener la lista de archivos .jpg en el directorio de comentarios
         result = [f for f in os.listdir(directory) if f.endswith('.jpg')]
-        
+
         # Crear el nuevo path para la imagen
-        new_path = os.path.join('img/comments', f'{len(result)}_{os.path.basename(path)}')
+        new_path = os.path.join(
+            'img/comments', f'{len(result)}_{os.path.basename(path)}')
         full_path = os.path.join(base_dir, 'teVeoapp/static', new_path)
-        
+
         # Copiar la imagen al nuevo path
         with open(full_path, 'wb') as f:
             with open(os.path.join(base_dir, 'teVeoapp/static', path), 'rb') as f2:
                 f.write(f2.read())
-        
+
         return new_path
     except Exception as e:
         print(f"Failed to save image comment. Error: {str(e)}")

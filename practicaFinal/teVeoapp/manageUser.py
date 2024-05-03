@@ -7,12 +7,13 @@ DEFAULT_NAME = "Anónimo"
 def manageNameLogin(request):
     username = request.session.get('username')
     # Para ver que puede ser un valor, vacio o None, en caso de estos dos ultimos valores, se asigna el valor por defecto
-    #print(f"Name: {username}")
+    # print(f"Name: {username}")
     if username == "" or username == None:
         username = DEFAULT_NAME
     # Para comprobar que se ha guardado el nombre en la consola
-    #print(f"Name: {username}") 
+    # print(f"Name: {username}")
     return username
+
 
 def manageSize(request):
     size = request.session.get('font_size')
@@ -22,8 +23,9 @@ def manageSize(request):
         font_size = "font-size-grande"
     else:
         font_size = DEFAULT_FONT_SIZE
-    #print(f"Size: {font_size}")
+    # print(f"Size: {font_size}")
     return font_size
+
 
 def manageFamily(request):
     family = request.session.get('font_family')
