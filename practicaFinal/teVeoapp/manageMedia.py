@@ -78,8 +78,10 @@ def load_cameras_from_xml2(camera):
         latitude = camera.getElementsByTagName('latitude')[0].firstChild.data
         # Obtiene el contenido del primer elemento 'longitude' dentro del
         # elemento 'camera'
-        longitude = camera.getElementsByTagName('longitude')[0].firstChild.data
-        # Combina la latitud y la longitud en una cadena, separada por una coma
+        longitude = camera.getElementsByTagName(
+            'longitude')[0].firstChild.data
+        # Combina la latitud y la longitud en una cadena, separada por una
+        # coma
         coordinates = f'{latitude},{longitude}'
         # Define el id de la fuente
         source_id = SOURCE_ID_LIS2
@@ -344,7 +346,8 @@ def clear_all():
     delete_files_in_directory(data_directory)
 
     # Eliminar todas las imágenes en el directorio de comentarios
-    comments_directory = os.path.join(base_dir, 'teVeoapp/static/img/comments')
+    comments_directory = os.path.join(
+        base_dir, 'teVeoapp/static/img/comments')
     delete_files_in_directory(comments_directory)
 
     print("All images deleted")
