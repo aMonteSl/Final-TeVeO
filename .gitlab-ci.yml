@@ -3,7 +3,6 @@ image: "python:3.10-slim"
 before_script:
   - python3 --version
 
-
 stages:
   - analysis
   - test
@@ -11,11 +10,11 @@ stages:
 pep8:
   stage: analysis
   script:
-    - pip install pycodestyle
-    - pycodestyle practicaFinal/teVeoapp/*.py
     - pip install pep8
     - pep8 practicaFinal/teVeoapp/*.py
-
+    - pip install pycodestyle
+    - pycodestyle practicaFinal/teVeoapp/*.py
+    
 
 test:
   stage: test
