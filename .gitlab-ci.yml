@@ -13,6 +13,8 @@ pep8:
   script:
     - pip install pycodestyle
     - pycodestyle practicaFinal/teVeoapp/*.py
+    - pip install pep8
+    - pep8 practicaFinal/teVeoapp/*.py
 
 
 test:
