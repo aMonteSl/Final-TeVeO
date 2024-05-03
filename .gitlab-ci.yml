@@ -21,6 +21,7 @@ test:
     - python3 -m venv venv/
     - source venv/bin/activate
     - pip install django
+    - pip install requests
     - python3 practicaFinal/manage.py makemigrations
     - python3 practicaFinal/manage.py migrate
     - python3 practicaFinal/manage.py test
