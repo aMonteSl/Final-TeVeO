@@ -10,7 +10,6 @@ from . import views
 from .models import Camera, Comment
 
 
-
 class ManageUserTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -147,17 +146,16 @@ class ManageOrderTest(TestCase):
         self.assertEqual(ordered_comments[1], self.comment2)
         self.assertEqual(ordered_comments[2], self.comment1)
 
+
 class TestManageMedia(unittest.TestCase):
 
     def test_get_xml_files(self):
-        # Suponiendo que hay al menos un archivo .xml o .kml en el directorio
         files = get_xml_files()
         self.assertTrue(len(files) > 0)
         for file in files:
             self.assertTrue(file.endswith('.xml') or file.endswith('.kml'))
 
     def test_load_cameras_from_xml1(self):
-        # Suponiendo que tenemos un XML de cámara válido
         camera_xml = """
         <camera>
             <id>1</id>
@@ -176,8 +174,6 @@ class TestManageMedia(unittest.TestCase):
         self.assertEqual(result[4], '-3.703790,40.416775')
 
     def test_load_cameras_from_xml2(self):
-        # Aquí necesitaríamos un ejemplo de XML para la cámara de la función load_cameras_from_xml2
-        # Supongamos que es similar a load_cameras_from_xml1
         camera_xml = """
         <camera>
             <id>1</id>
@@ -188,8 +184,6 @@ class TestManageMedia(unittest.TestCase):
         """
         camera = parseString(camera_xml)
         result = load_cameras_from_xml2(camera)
-        # Aquí necesitaríamos saber qué esperar de la función load_cameras_from_xml2
-        # Para este ejemplo, supongamos que es similar a load_cameras_from_xml1
         self.assertIsNotNone(result)
         self.assertEqual(result[0], 'LIS2-')
         self.assertEqual(result[1], '1')
