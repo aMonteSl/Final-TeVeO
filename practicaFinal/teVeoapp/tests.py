@@ -135,7 +135,7 @@ class ManageOrderTest(TestCase):
 
     def test_order_comments_by_time(self):
         comments = Comment.objects.all()
-        ordered_comments = manageOrder.order_comments_by_time(comments, 'asc')
+        ordered_comments = manageOrder.order_comments_by_time(comments, 'ac')
         self.assertEqual(ordered_comments[0], self.comment1)
         self.assertEqual(ordered_comments[1], self.comment2)
         self.assertEqual(ordered_comments[2], self.comment3)
