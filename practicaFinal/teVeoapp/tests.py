@@ -289,8 +289,6 @@ class TestManageUser(TestCase):
 
 class TestManageOrder(TestCase):
 
-    def create_a_camaras(self):
-
     def test_order_cameras_by_comments_(self):
         # Primero en orden ascendente
         response = manageOrder.order_cameras_by_comments('asc')
