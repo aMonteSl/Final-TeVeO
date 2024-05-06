@@ -13,8 +13,10 @@ from .models import Camera, Comment
 class TestViews(TestCase):
 
     def test_index(self):
-        # Hay que crear un request falso con RequestFactory con una sesion falsa para que no de error al ejecutar la vista
-        # la sesion tiene un username, font_size, font_family y token que son necesarios para que no de error al ejecutar la vista index en views.py 
+        # Hay que crear un request falso con RequestFactory
+        # con una sesion falsa para que no de error al ejecutar la vista
+        # la sesion tiene un username, font_size, font_family y
+        # token que son necesarios para que no de error al ejecutar la vista index en views.py 
         request = RequestFactory().get('/')
         request.session = {'username': '', 'font_size': 'TEST', 'font_family': 'TEST'}
         response = views.index(request)
@@ -30,7 +32,8 @@ class TestViews(TestCase):
     
     def test_camera(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST', src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(source_id='TEST', id='TEST',
+                                     src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TEST
@@ -44,7 +47,8 @@ class TestViews(TestCase):
 
     def test_save_comment_if_post(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST', src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(source_id='TEST', id='TEST',
+                                     src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
         # Guardamos la camara
         cam.save()
         # Creamos un request POST con el id TEST y un cuerpo de comentario
