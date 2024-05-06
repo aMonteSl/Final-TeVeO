@@ -65,9 +65,14 @@ class TestExtremeoExtremo(TestCase):
 
     def test_camera(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                    coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TEST
@@ -94,9 +99,14 @@ class TestExtremeoExtremo(TestCase):
 
     def test_camera_json(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                    coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TEST
@@ -113,9 +123,14 @@ class TestExtremeoExtremo(TestCase):
 
     def test_camera_dyn(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                    coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TEST
@@ -132,9 +147,14 @@ class TestExtremeoExtremo(TestCase):
 
     def test_latest_image(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                    coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
         # Guardamos la camara
         cam.save()
 
@@ -152,9 +172,14 @@ class TestExtremeoExtremo(TestCase):
 
     def test_get_comments(self):
         # Creamos una camara con el id TEST
-        cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                    coordinates='TEST', img_path='TEST')
+        cam = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
         # Guardamos la camara
         cam.save()
 
@@ -313,9 +338,22 @@ class TestManageOrder(TestCase):
 
     def test_order_comments_by_time(self):
         # Creamos un comentario con fecha 2024-04-06
-        comment = Comment.objects.create(name='TEST', camera=Camera.objects.create(source_id='TEST', id='TEST',
-                                                                                   src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg', name='TEST',
-                                                                                   coordinates='TEST', img_path='TEST'), comment='TEST-TEST', date='2024-04-06', img_path_comment='TEST')
+        camera = Camera.objects.create(
+            source_id='TEST',
+            id='TEST',
+            src='https://infocar.dgt.es/etraffic/data/camaras/4.jpg',
+            name='TEST',
+            coordinates='TEST',
+            img_path='TEST'
+        )
+
+        comment = Comment.objects.create(
+            name='TEST',
+            camera=camera,
+            comment='TEST-TEST',
+            date='2024-04-06',
+            img_path_comment='TEST'
+        )
         # Guardamos el comentario
         comment.save()
 
