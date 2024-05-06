@@ -13,7 +13,7 @@ from .models import Camera, Comment
 class TestViews(TestCase):
 
     def try_index(self):
-        request = RequestFactory().get('/')
+        request = RequestFactory().get('/fjkffkkjfdjkkdfj')
         response = views.index(request)
         self.assertEqual(response.status_code, 200)
 
