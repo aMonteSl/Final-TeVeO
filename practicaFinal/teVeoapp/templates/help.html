@@ -1,0 +1,36 @@
+<!-- Esto va a ser un html básico donde se explique el funcionamiento de la aplicación. -->
+{% extends 'base.html' %}
+{% load static %}
+<!-- index.html -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+
+{% block body %}
+
+<!-- Poner la autoria de la aplicación: Adrián Montes Linares Ingeniería Telemática URJC -->
+
+<div class="row">
+    <div class="col-12 text-center">
+        <div class="custom-gray-bg text-white" style="border-radius: 10px; padding: 20px; margin-top: 20px; margin-right: 20px; margin-left: 20px;">
+            <h1 style="margin-top: 20px;">Bienvenido a la aplicación TeVeo</h1>
+            <p>Esta aplicación ha sido desarrollada por Adrián Montes Linares, estudiante de Ingeniería Telemática en la Universidad Rey Juan Carlos.</p>
+            <p>La aplicación TeVeo es una aplicación web que permite visualizar cámaras de tráfico en tiempo real.</p>
+            <p>Tenemos un menu principal, una página principal con todas las cámaras, una página en especifico por cada cámara, una página para poner comentarios,
+                 una página dinámica para ver las cámaras en tiempo real, una página de configuración donde puedes pone tu nombre para comentar, el
+                tamaño de letras que deseas y el estilo de letra que deseas, además de contar con esta página de ayuda.</p>
+            <p>En la página principal verás los comentarios que existen, pudiendo elegir el orden entre, más recientes primero, o más viejos primero</p>
+            <p>En la página con todas las cámaras disponibles, podrás cargar de las 4 fuentes de datos disponibles, además de un boton para limpiar las imagenes y los comentarios, este último botón en un futuro a la hora de lanzar la aplicación 
+                se eliminaria, actualmente esta para hacer más fácil la depuración de la aplicación. Además veras una imagén aleatória, un carrusel con todas las imagenes y luego listadas todas las imagenes.
+                Todo esto con distintos links a la pagina de la cámara en concreto, página para comentar la imagen, página dinamica y acceso a la información en formato JSON tanto de todas las cámaras en global como de cada una de manera individual.</p>
+            </p>
+            <p>En la página de la cámara ves la última imagen de la cámara, los comentariós y links a distintas páginas ya mencionadas</p>
+            <p>En la página de comentarios ves la lista de comentarios y puedes poner un cometario viendo la imagen más reciente</p>
+            <p>En la página dinámica ves la imagen en tiempo real de la cámara seleccionada, además de los comentarios a tiempo real (en realidad es cada 30 segundos)</p>
+            <p>En la página de configuración puedes poner un nombre para cometnar, el tamaño de letra y el estilo de ella. Además podrás generar un enlace de autenticación para seguir con al misma sesión en otro navegador</p>
+            <p>Este es un resumen general del funcionamiento de la página, hecha en una sola aplicación de Django</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -371,5 +371,4 @@ def cameras_json(request):
 
 
 def help(request):
-    # Hacer pagina de ayuda
-    return HttpResponse("Ayuda")
+    return render(request, 'help.html')
