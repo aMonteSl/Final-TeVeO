@@ -15,11 +15,13 @@ class TestViews(TestCase):
     def test_index(self):
         request = RequestFactory().get('/caras/')
         response = views.index(request)
+        print("Test index")
         self.assertEqual(response.status_code, 200)
 
     def test_mainCameras(self):
         request = RequestFactory().get('/camaras/')
         response = views.mainCameras(request)
+        print("Test mainCameras")
         self.assertEqual(response.status_code, 200)
 
     def test_camera(self):
@@ -32,5 +34,6 @@ class TestViews(TestCase):
         request = RequestFactory().get('/camaras/TEST/')
         response = views.camera(request, 'TEST')
         self.assertEqual(response.status_code, 200)
+        print("Test camera")
         # Borramos la camara
         cam.delete()
