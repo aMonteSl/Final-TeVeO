@@ -222,7 +222,8 @@ def comment_view(request):
     if request.method == 'POST':
         save_comment_if_post(request, camera, username)
 
-    # Obtener todos los comentarios de la camera de más reciente a más antiguo
+    # Obtener todos los comentarios de la camera de más reciente a más
+    # antiguo
     comments = Comment.objects.filter(camera=camera).order_by('-date')
     context = {
         'request': request,
@@ -254,7 +255,8 @@ def camera_dyn(request, id):
     if request.method == 'POST':
         save_comment_if_post(request, camera, username)
 
-    # Obtener todos los comentarios de la camera de más reciente a más antiguo
+    # Obtener todos los comentarios de la camera de más reciente a más
+    # antiguo
     comments = Comment.objects.filter(camera=camera).order_by('-date')
     context = {
         'request': request,
@@ -303,7 +305,8 @@ def get_comments(request, id):
     if camera is None:
         return HttpResponse("Cámara no encontrada")
 
-    # Obtener todos los comentarios de la camera de más reciente a más antiguo
+    # Obtener todos los comentarios de la camera de más reciente a más
+    # antiguo
     comments = Comment.objects.filter(camera=camera).order_by('-date')
 
     context = {

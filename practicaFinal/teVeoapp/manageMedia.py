@@ -361,7 +361,9 @@ def save_img_comment(path):
     """
     try:
         # Obtener el directorio base y el directorio de comentarios
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        base_dir = os.path.dirname(
+            os.path.dirname(
+                os.path.abspath(__file__)))
         directory = os.path.join(base_dir, 'teVeoapp/static/img/comments')
 
         # Obtener la lista de archivos .jpg en el directorio de comentarios

@@ -16,5 +16,8 @@ urlpatterns = [
     path('camaras/<str:id>/json', views.camera_json, name='camera_json'),
     path('camaras/<str:id>/dyn', views.camera_dyn, name='camera_dyn'),
     path('camaras/<str:id>/img', views.latest_image, name='latest_image'),
-    path('camaras/<str:id>/comment', views.get_comments, name='get_comments'),
+    path(
+        'camaras/<str:id>/comment',
+        views.get_comments,
+        name='get_comments'),
 ]
