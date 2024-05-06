@@ -24,7 +24,8 @@ class TestViews(TestCase):
 
     def try_camera(self):
         # Creamos una camara con el id TRY
-        cam = Camera.objects.create(id='TRY', name='TRY', url='TRY', user='TRY', password='TRY')
+        cam = Camera.objects.create(id='TRY', name='TRY',
+                                    url='TRY', user='TRY', password='TRY')
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TRY
