@@ -40,7 +40,8 @@ class TestViews(TestCase):
     def test_camera(self):
         # Creamos una camara con el id TEST
         cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
+                                    src='TEST', name='TEST',
+                                    coordinates='TEST', img_path='TEST')
         # Guardamos la camara
         cam.save()
         # Creamos un request con el id TEST
@@ -58,7 +59,8 @@ class TestViews(TestCase):
     def test_save_comment_if_post(self):
         # Creamos una camara con el id TEST
         cam = Camera.objects.create(source_id='TEST', id='TEST',
-                                    src='TEST', name='TEST', coordinates='TEST', img_path='TEST')
+                                    src='TEST', name='TEST',
+                                    coordinates='TEST', img_path='TEST')
         # Guardamos la camara
         cam.save()
         # Creamos un request POST con el id TEST y un cuerpo de comentario
