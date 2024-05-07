@@ -12,7 +12,7 @@ pep8:
   stage: analysis
   script:
     - pip install pycodestyle
-    - pycodestyle practicaFinal/teVeoapp/*.py
+    - pycodestyle teVeoapp/*.py
 
 
 test:
