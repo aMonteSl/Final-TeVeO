@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-128859823-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-128859823-1');
+    </script>
+
+    <meta charset="utf-8">
+    <base href="/">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/informo/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/informo/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/informo/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicons/informo/site.webmanifest">
+    <link rel="mask-icon" href="/assets/favicons/informo/safari-pinned-tab.svg" color="#003df6">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <style>
+        .warning-compatibility {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #F74541;
+            color: #fff;
+            font-size: 14px;
+            width: 100%;
+            z-index: 99999;
+        }
+
+        .app-loading {
+            background-color: #E4E5E8;
+            /* background-image: url('/assets/foto-traffic.jpg'); */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .app-loading .informo-loading {
+            height: 124px;
+            width: 360px;
+            background: #fff;
+            border-radius: 4px;
+            padding: 24px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-flow: column;
+        }
+
+        .app-loading .informo-loading > img {
+            height: 48px
+        }
+
+        .app-loading .informo-loading > svg {
+            width: 30px;
+            height: 30px;
+            animation: rotate 2s linear forwards running infinite;
+        }
+
+        .app-loading .informo-loading > svg path {
+            fill: none;
+            stroke: #323232;
+            stroke-width: 20;
+            stroke-dasharray: 629;
+            animation: load 2s linear forwards running infinite;
+        }
+
+        @keyframes load {
+            0% {
+                stroke-dashoffset: 0;
+                opacity: 1;
+            }
+
+            100% {
+                stroke-dashoffset: 1260;
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotateZ(-90deg);
+            }
+
+            100% {
+                transform: rotateZ(270deg);;
+            }
+        }
+
+
+    </style>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function (event) {
+            const ua = navigator.userAgent;
+            const isWebGL2Supported = function() {
+              return !!document.createElement('canvas').getContext('webgl')
+            };
+            const M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+            if (/trident|msie/i.test(M[1]) || !isWebGL2Supported()) {
+                document.querySelector('.warning-compatibility').style.display = '';
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="warning-compatibility" style="display: none;">
+  It looks like you are using a not supported browser. To improve your experience try:
+  &nbsp;<a href="https://www.google.es/chrome/">Chrome</a>
+  &nbsp; · &nbsp;<a href="https://www.mozilla.org/es-ES/firefox/new/">Mozilla Firefox</a>
+  &nbsp; · &nbsp;<a href="https://www.microsoft.com/es-es/windows/microsoft-edge">Edge</a>
+  &nbsp; · &nbsp;<a href="https://www.apple.com/safari/">Safari</a>
+</div>
+<app-root>
+    <div class="app-loading">
+        <div class="informo-loading">
+            <img src="/assets/logos/informo-negro.svg"/>
+            <svg viewBox="-10 -10 220 220" style="width: 40px; height: 40px">
+                <path d="M200,100 C200,44.771525 155.228475,0 100,0 C44.771525,0 0,44.771525 0,100 C0,155.228475 44.771525,200 100,200 C155.228475,200 200,155.228475 200,100 Z"
+                      stroke-dashoffset="0"></path>
+            </svg>
+        </div>
+    </div>
+</app-root>
+<script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="styles.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
+</html>

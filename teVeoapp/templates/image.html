@@ -1,0 +1,5 @@
+<!-- camera_image.html -->
+{% load static %}
+{% load tz %}
+{% now "U" as current_timestamp %}
+<img id="camera-image" src="{% static camera.img_path %}?{{current_timestamp}}" class="img_size_camera" alt="" hx-get="{% url 'latest_image' camera.id %}?{{current_timestamp}}" hx-trigger="every 30s" hx-swap="outerHTML">

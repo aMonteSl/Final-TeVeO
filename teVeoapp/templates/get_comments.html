@@ -1,0 +1,17 @@
+{% load static %}
+{% load tz %}
+{% now "U" as current_timestamp %}
+<div id="comment-list" hx-get="{% url 'get_comments' camera.id %}?{{current_timestamp}}" hx-trigger="every 30s" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' hx-swap="outerHTML" hx-boost="true">
+    {% if comments %}
+    {% for comment in comments %}
+        <div id="comment-{{ comment.id }}" class="text-white custom-gray-bg" style="border-radius: 10px; padding: 20px; margin-top: 20px;">
+            <h5>{{ forloop.counter }}. Comentario de {{ comment.name }}: {{ comment.comment }}</h5>
+            <p><small>Fecha: {{ comment.date }}</small></p>
+        </div>
+    {% endfor %}
+{% else %}
+    <div id="no-comments" class="text-white custom-gray-bg" style="border-radius: 10px; padding: 20px; margin-top: 20px;">
+        <h5>No hay comentarios para esta cámara por el momento.</h5>
+    </div>
+{% endif %}
+</div>

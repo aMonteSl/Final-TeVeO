@@ -22,7 +22,6 @@ test:
     - source venv/bin/activate
     - pip install django
     - pip install requests
-    - cd practicaFinal
     - python3 manage.py makemigrations
     - python3 manage.py migrate
     - python3 manage.py test

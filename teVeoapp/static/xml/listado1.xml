@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<camaras>
+    <camara>
+        <id>1</id>
+        <src>https://ctraficomovilidad.malaga.eu/recursos/movilidad/camaras_trafico/TV-24.jpg</src>
+        <lugar>TV24-PTE. MEDITERRÁNEO</lugar>
+        <coordenadas>-4.424923000000033,36.73751199999788</coordenadas>
+    </camara>
+    <camara>
+        <id>2</id>
+        <src>https://informo.madrid.es/cameras/Camara06305.jpg</src>
+        <lugar>PLAZA DE CUZCO</lugar>
+        <coordenadas>-3.69023949186136,40.4590641757846</coordenadas>
+    </camara>
+    <camara>
+        <id>3</id>
+        <src>https://ctraficomovilidad.malaga.eu/recursos/movilidad/camaras_trafico/TV-25.jpg</src>
+        <lugar>TV25-RAMÓN Y CAJAL</lugar>
+        <coordenadas>-4.422465012257606,36.74670660342603</coordenadas>
+    </camara>
+    <camara>
+        <id>4</id>
+        <src>https://informo.madrid.es/cameras/Camara05306.jpg</src>
+        <lugar>CONCHA ESPINA - PPE DE VERGARA</lugar>
+        <coordenadas>-3.67746270592335,40.4515456734308</coordenadas>
+    </camara>
+</camaras>

@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Título de tu página</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+    <link rel="icon" type="image/ico" href="{% static 'img/icon/favicon.ico' %}">
+    <!-- Iconos de la camara y de comentarios sib de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body class="{{ font_size }} {{ font_family }}">
+    <header id="header">
+        <div class="header-container">
+            <img src="{% static 'img/resources/header.jpg' %}" class="img-fluid header" alt="...">
+            <a href="{% url 'index' %}" class="header-title">
+              TeVeo
+              <span class="user-text">Usuario: {{ username }}</span>
+            </a>
+        </div>
+    </header>
+
+    <nav id="navbar" class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a href="/">
+          <img src="{% static 'img/icon/favicon.png' %}" alt="TeVeo Logo" style="width: 50px; height: 50px;">
+          </a>
+          <a class="navbar-brand" href="{% url 'index' %}">TeVeo</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <!-- Esto es para ir a la pagina Principal -->
+              {% if request.path != '/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" aria-current="page" href="{% url 'index' %}">Principal</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Principal</span>
+                </li>
+              {% endif %}
+              
+              <!-- Esto es para el texto que te lleva a todas las camaras  -->
+              {% if request.path != '/camaras/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" href="{% url 'mainCameras' %}">Cámaras</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Cámaras</span>
+                </li>
+              {% endif %}
+
+              {% if request.path != '/config/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" href="{% url 'config' %}">Configuración</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Configuración</span>
+                </li>
+              {% endif %}
+
+              {% if request.path != '/ayuda/' %}
+                <li class="nav-item">
+                  <a class="nav-link active text-nav-activated" href="{% url 'ayuda' %}">Ayuda</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                  <span class="nav-link disabled text-nav-desactivated" aria-current="page">Ayuda</span>
+                </li>
+              {% endif %}
+
+              {% if request.path != '/admin/' %}
+                <li class="nav-item">
+                    <a class="nav-link active" style="color: rebeccapurple" href="{% url 'admin:index' %}">Admin</a>
+                </li>
+              {% else %}
+                <li class="nav-item">
+                    <span class="nav-link disabled text-nav-desactivated" aria-current="page">Admin</span>
+                </li>
+              {% endif %}
+              
+              
+            </ul>
+            
+          </div>
+        </div>
+    </nav>
+
+    <main id="main-content">
+        {% block body %}
+        {% endblock %}
+    </main>
+
+    <div id="footer" class="container">
+      <footer class="py-4 my-0 border-top fixed-bottom bg-dark text-white">
+        <div class="row">
+          <div class="col d-flex justify-content-center align-items-center">
+            <i class="fas fa-camera fa-2x me-2"></i>
+            <h5 class="mb-0">Número de cámaras: <span class="badge bg-dark">{{ cameras_count }}</span></h5>
+          </div>
+          <div class="col d-flex justify-content-center align-items-center">
+            <i class="fas fa-comments fa-2x me-2"></i>
+            <h5 class="mb-0">Número de comentarios: <span class="badge bg-dark">{{ comments_count }}</span></h5>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <div class="b-example-divider"></div>
+    
+</body>
+</html>
