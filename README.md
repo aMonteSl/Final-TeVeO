@@ -18,9 +18,9 @@
 
 * El proyecto final del curso 2023-2024 consiste en la creación de una aplicación web llamada "TeVeO", que permite comentar lo que se ve en ciertas cámaras. La información de las cámaras se obtiene de fuentes soportadas. Los comentarios incluyen el momento en que se hicieron y una imagen de la cámara en ese momento. Cada cámara tiene un identificador único y una información asociada. No se requiere autenticación de usuarios para acceder a las salas.
 
-La aplicación se construirá como un proyecto Django/Python3 con almacenamiento de datos en SQLite3. Se utilizarán plantillas Django para definir las páginas, y se proporcionarán páginas principales como la página de cámaras, página de cada cámara, página para poner un comentario, página dinámica de cada cámara, página de configuración y página de ayuda. Se utilizará HTMX para actualizar dinámicamente la página de la cámara y los comentarios.
+* La aplicación se construirá como un proyecto Django/Python3 con almacenamiento de datos en SQLite3. Se utilizarán plantillas Django para definir las páginas, y se proporcionarán páginas principales como la página de cámaras, página de cada cámara, página para poner un comentario, página dinámica de cada cámara, página de configuración y página de ayuda. Se utilizará HTMX para actualizar dinámicamente la página de la cámara y los comentarios.
 
-El sitio también proporcionará cámaras en formato JSON y tendrá un mecanismo de autorización para permitir que otros navegadores accedan con la misma configuración. Se realizarán pruebas extremo a extremo y pruebas unitarias, aunque estas últimas son opcionales.
+* El sitio también proporcionará cámaras en formato JSON y tendrá un mecanismo de autorización para permitir que otros navegadores accedan con la misma configuración. Se realizarán pruebas extremo a extremo y pruebas unitarias, aunque estas últimas son opcionales.
 
 ### Páginas de la práctica
 
