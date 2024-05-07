@@ -8,9 +8,9 @@
 * Titulación: Ingeniería Telemática
 * Cuenta en laboratorios: adrian
 * Cuenta URJC: a.montesl.2020
-* Video básico (url):
-* Video parte opcional (url):
-* Despliegue (url):
+* Video básico (url): https://youtu.be/MP_jy5zef3Y
+* Video parte opcional (url): https://youtu.be/sT0F2n62ypc
+* Despliegue (url): https://adrian1.pythonanywhere.com/
 * Contraseñas: Se indíca al principio de la práctica lo siguiente "No habrá autenticación de usuarios para acceder a las salas:" por lo que no hay contraseñas
 * Cuenta Admin Site: admin/admin
 
