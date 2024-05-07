@@ -181,7 +181,7 @@ def download_xml_files(xml_file, file_path):
     elif xml_file == 'dgt.xml':
         url = URL_DGT
 
-    try: 
+    try:
         # Realizar una solicitud GET a la URL
         response = requests.get(url)
         # Escribir el contenido de la respuesta en un archivo
@@ -192,7 +192,6 @@ def download_xml_files(xml_file, file_path):
         print(f"Successfully downloaded {xml_file} from {url}")
     except Exception as e:
         print(f"Failed to download {xml_file} from {url}. Error: {str(e)}")
-        
 
 
 def create_and_save_camera(sourc_id, id, src, name, coordinates):
