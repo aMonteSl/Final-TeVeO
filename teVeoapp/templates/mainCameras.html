@@ -55,6 +55,7 @@
                                                 <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica</a>
                                                 <a href="{% url 'comment' %}?camera_id={{ camera.id }}" class="link">Página de comentarios, actualmente: {{ camera.comment_set.count }}</a>
                                                 <a href="{% url 'camera_json' camera.id %}" class="link">JSON</a>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -105,6 +106,7 @@
                                                     <a href="{% url 'camera_dyn' camera.id %}" class="link">Página dinámica</a>
                                                     <a href="{% url 'comment' %}?camera_id={{ camera.id }}" class="link">Página de comentarios, actualmente: {{ camera.comment_set.count }}</a>
                                                     <a href="{% url 'camera_json' camera.id %}" class="link">JSON</a>
+                                                    
                                                     
                                                 </div>
                                             </div>
