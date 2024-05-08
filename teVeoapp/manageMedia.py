@@ -287,8 +287,8 @@ def download_and_save_image(cam):
 
         else:
             print(
-                f"Failed to process camera with id {cam.id}.
-                Error: {response.status_code}")
+                f"""Failed to process camera with id {cam.id}.
+                Error: {response.status_code}""")
     except Exception as e:
         print(f"Failed to process camera with id {cam.id}. Error: {str(e)}")
 
