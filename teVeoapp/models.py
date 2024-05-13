@@ -43,9 +43,13 @@ class Comment(models.Model):
 
 
 class Token(models.Model):
+    # Atributo que indica el usuario
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Atributo que indica el token
     token = models.CharField(max_length=200)
+    # Atributo que indica el tamaño de la fuente
     font_size = models.CharField(max_length=200, null=True)
+    # Atributo que indica el color de la fuente
     font_family = models.CharField(max_length=200, null=True)
 
     def __str__(self):
