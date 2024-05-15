@@ -18,6 +18,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.core import serializers
+from django.views.decorators.cache import never_cache
 
 # Create your views here.
 
@@ -134,7 +135,7 @@ def index(request):
     # seguro y maneja mejor los errores
     return render(request, 'index.html', context)
 
-
+@never_cache
 def mainCameras(request):
     # Obtener las fuentes de datos disponibles en static/xml
     random_img = None
