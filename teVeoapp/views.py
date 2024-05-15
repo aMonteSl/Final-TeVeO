@@ -135,6 +135,7 @@ def index(request):
     # seguro y maneja mejor los errores
     return render(request, 'index.html', context)
 
+
 @never_cache
 def mainCameras(request):
     # Obtener las fuentes de datos disponibles en static/xml
